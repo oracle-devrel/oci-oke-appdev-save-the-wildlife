@@ -15,21 +15,35 @@ Estimated Lab Time: 15 minutes
 * An Oracle Free Tier, Paid or LiveLabs Cloud Account
 
 
-## Task 1: XXX
+## Task 1: Create a Kubernetes Cluster
 
-1. XXX
+1. Using Quick Create
 
-2. XXX
+2. Obtain cluster access details
 
-3. XXX
+3. Setup `kubectl` in Cloud Shell.
 
-## Task 2: XXX
+## Task 2: Create an Autonomous Database
 
-1. XXX
+1. Create ATP
 
-2. XXX
+2. Download wallet and move to cloud shell
 
-3. XXX
+3. Copy wallet to score directory
+
+## Task 3: Deploy the application
+
+1. Create environment variables
+
+2. set environment
+
+3. release all
+
+4. copy template files (.env_server, etc)
+
+5. kubectl
+
+
 
 ## Acknowledgements
 

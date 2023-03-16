@@ -4,9 +4,9 @@
 
 In this lab you will complete the process of deploying the first form of the Three.js app to the Oracle Cloud. The deployment process utilizes Terraform and Ansible, however, we've provided a script to help streamline the process.
 
-Terraform is an Open Source tool to deploy resources in the cloud using code. This method is typically referred to as Infrastructure as Code (IaC). Terraform configuration is declarative; you simply define what you want in the Oracle Cloud and it ensures the resources are created to your specifications.
+Terraform is an Open Source tool to deploy resources in the cloud using code. This method is typically referred to as Infrastructure as Code (IaC). Terraform configuration is declarative; you simply define what you want in the Oracle Cloud and it ensures the resources are created to your speciications.
 
-Ansible is na open source tool that provides both configuration management and infrastructure as code. For this workshop, we leverage the configuration management functionality. Once Terraform deploys the infrastructure, Ansible will establish a remote SSH connection to the servers and apply the requisite configuration (app install, file downloads, configuration settings, etc.)
+Ansible is na open source tool that provides both configuration management and infrastructure as code. For this workshop, we leverage the configuration management functionality. Once Terraform deploys the infrastructure, Ansible will establish a remote SSH connection to the servers and apply the requisite confniguration (app install, file downloads, configuration settings, etc.)
 
 Estimated Lab Time: 15 minutes
 
@@ -50,6 +50,7 @@ Estimated Lab Time: 15 minutes
     ```
 
     Accepting the defaults will create a private key `id_rsa` and public key `id_rsa.pub` in a _.ssh_ folder under the home directory.
+
 
 ## Task 2: Configure Terraform
 
@@ -105,7 +106,7 @@ Estimated Lab Time: 15 minutes
 
 
     ```
-    <copy>./scripts/start_VM.sh</copy>
+    <copy> ./scripts/start_VM.sh </copy>
     ```
 
 2. The script will begin by building the web server packages:
