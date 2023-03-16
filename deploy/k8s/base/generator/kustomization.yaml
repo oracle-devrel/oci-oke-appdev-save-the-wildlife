@@ -1,0 +1,6 @@
+resources:
+  - generator.yaml
+configMapGenerator:
+  - name: generator-env
+    files:
+      - .env=.env_generator

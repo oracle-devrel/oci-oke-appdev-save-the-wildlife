@@ -2,22 +2,45 @@
 
 [![License: UPL](https://img.shields.io/badge/license-UPL-green)](https://img.shields.io/badge/license-UPL-green) [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=oracle-devrel_devlive-save-the-wildlife)](https://sonarcloud.io/dashboard?id=oracle-devrel_devlive-save-the-wildlife)
 
-## THIS IS A NEW, BLANK REPO THAT IS NOT READY FOR USE YET.  PLEASE CHECK BACK SOON!
+# Introduction
+![Game](images/logoPlusOCI.png)
+![Game](images/stwl.gif)
 
-## Introduction
-MISSING
+## The power of Cloud Native on Oracle Cloud
 
-## Getting Started
-MISSING
+In this workshop you will learn how to deploy a simple Three.js application to the cloud, then iterate through the modernization process to enhance the application and ultimately deploy to Kubernetes.
+
+When building and deploying applications in the cloud it is important to understand the capabilities provided by the cloud and learn to align those with the requirements of your application. Whether starting with an enhancing a simple application, or deconstructing a legacy monolith, there are a variety of choices to help right-size your solution.
+
+<!-- ![OKE Logo](images/oke.png) -->
+
+
+Estimated Lab Time: 60 minutes
+
+### Objectives
+In this, you will:
+
+* Deploy a simple Three.js application to OCI Compute with Terraform, using Ansible to provide all requisite app configuration.
+
+* Create container images of the application components and migrate to OCI Container Images.
 
 ### Prerequisites
-MISSING
 
-## Notes/Issues
-MISSING
+* An Oracle Free Tier or Paid Cloud Account
+* [Familiarity with the OCI console](https://docs.us-phoenix-1.oraclecloud.com/Content/GSG/Concepts/console.htm)
 
-## URLs
-* Nothing at this time
+* Basic familiarity with app containerization
+
+* [Basic familiarity with OCI Container Instances](https://www.oracle.com/cloud/cloud-native/container-instances/)
+
+* [Basic familiarity with OKE](https://www.oracle.com/cloud/cloud-native/container-engine-kubernetes/)
+
+## Acknowledgements
+
+* **Author** - Victor Martin - Technology Product Strategy Director - EMEA
+* **Author** - Wojciech (Vojtech) Pluta - Developer Relations - Immersive Technology Lead
+* **Author** - Eli Schilling - Developer Relations - Cloud Native and DevOps
+* **Last Updated By/Date** - March, 2023
 
 ## Contributing
 This project is open source.  Please submit your contributions by forking this repository and submitting a pull request!  Oracle appreciates any contributions that are made by the open source community.

@@ -1,0 +1,8 @@
+config_file_profile  = "DEFAULT"
+tenancy_ocid = "ocid1.tenancy.oc1..xxxxx"
+user_ocid = "ocid1.user.oc1..xxx"
+fingerprint = "xx:yy"
+private_key_path = "xxx.pem"
+region = "uk-london-1"
+compartment_ocid     = "ocid1.compartment.oc1..xxxxx"
+ssh_public_key       = "xxxxx"

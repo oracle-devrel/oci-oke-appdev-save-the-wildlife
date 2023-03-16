@@ -1,0 +1,23 @@
+bases:
+  - "../../base/ingress"
+  - "../../base/web"
+  - "../../base/ws-server"
+  - "../../base/generator"
+  - "../../base/score"
+
+patchesStrategicMerge:
+  - "patch_server_replicas.yaml"
+
+images:
+- name: REGION_TEMPLATE_KEY.ocir.io/TENANCY_TEMPLATE_NAMESPACE/oci_multiplayer/server
+  newName: REGION_KEY.ocir.io/TENANCY_NAMESPACE/oci_multiplayer/server
+  newTag: 0.0.5
+- name: REGION_TEMPLATE_KEY.ocir.io/TENANCY_TEMPLATE_NAMESPACE/oci_multiplayer/generator
+  newName: REGION_KEY.ocir.io/TENANCY_NAMESPACE/oci_multiplayer/generator
+  newTag: 0.0.1
+- name: REGION_TEMPLATE_KEY.ocir.io/TENANCY_TEMPLATE_NAMESPACE/oci_multiplayer/web
+  newName: REGION_KEY.ocir.io/TENANCY_NAMESPACE/oci_multiplayer/web
+  newTag: 0.0.4
+- name: REGION_TEMPLATE_KEY.ocir.io/TENANCY_TEMPLATE_NAMESPACE/oci_multiplayer/score
+  newName: REGION_KEY.ocir.io/TENANCY_NAMESPACE/oci_multiplayer/score
+  newTag: 0.0.4

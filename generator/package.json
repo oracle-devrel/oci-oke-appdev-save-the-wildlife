@@ -1,0 +1,38 @@
+{
+  "name": "generator",
+  "version": "0.0.1",
+  "description": "OCI Multiplayer Generator",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js | pino-pretty"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vmleon/oci-multiplayer.git"
+  },
+  "keywords": [
+    "OCI",
+    "Multiplayer",
+    "web",
+    "socket",
+    "generator"
+  ],
+  "author": "Victor Martin Alvarez (victor.martin.alvarez@oracle.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vmleon/oci-multiplayer/issues"
+  },
+  "homepage": "https://github.com/vmleon/oci-multiplayer#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "node-fetch": "^3.3.1",
+    "pino": "^8.11.0",
+    "shortid": "^2.2.16",
+    "socket.io-client": "^4.6.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.21",
+    "pino-pretty": "^9.4.0"
+  }
+}
