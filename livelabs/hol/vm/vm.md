@@ -106,7 +106,9 @@ Estimated Lab Time: 15 minutes
 
 
     ```
-    <copy> ./scripts/start_VM.sh </copy>
+    <copy>
+    ./scripts/start_VM.sh 
+    </copy>
     ```
 
 2. The script will begin by building the web server packages:
