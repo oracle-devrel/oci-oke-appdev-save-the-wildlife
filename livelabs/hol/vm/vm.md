@@ -104,10 +104,11 @@ Estimated Lab Time: 15 minutes
 
 1. Run the deployment script which is stored in the _`scripts`_ folder.
 
-
-        <copy>
-        ./scripts/start_VM.sh 
-        </copy>
+    ```html
+    <copy>
+    ./scripts/start_VM.sh 
+    </copy>
+    ```
 
 2. The script will begin by building the web server packages:
 
