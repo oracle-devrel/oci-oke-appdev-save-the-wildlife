@@ -91,7 +91,7 @@ Estimated Lab Time: 15 minutes
 6. And finally, retrieve the contents of your public SSH key and add to the file.
 
     ```
-    <copy>cat ~/.ssh/id_rsa.pub
+    <copy>cat ~/.ssh/id_rsa.pub</copy>
     ```
 
     ![Paste SSH Key](images/paste-public-ssh-key.png)
