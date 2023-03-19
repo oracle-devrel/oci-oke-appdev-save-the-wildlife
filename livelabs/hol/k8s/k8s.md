@@ -1,52 +1,20 @@
 # Advanced content (optional)
 
 ## Migrate from other Cloud
-
-XXX
+This page is currently a work in progress and will be updated soon with advanced content on how to migrate to Oracle Cloud Infrastructure (OCI) from other cloud providers.
 
 ![Fn Logo](images/oke.png)
 
-XXX
-
 Estimated Lab Time: 15 minutes
 
-### Prerequisites
+## Task: 
 
-* An Oracle Free Tier, Paid or LiveLabs Cloud Account
-
-
-## Task 1: Create a Kubernetes Cluster
-
-1. Using Quick Create
-
-2. Obtain cluster access details
-
-3. Setup `kubectl` in Cloud Shell.
-
-## Task 2: Create an Autonomous Database
-
-1. Create ATP
-
-2. Download wallet and move to cloud shell
-
-3. Copy wallet to score directory
-
-## Task 3: Deploy the application
-
-1. Create environment variables
-
-2. set environment
-
-3. release all
-
-4. copy template files (.env_server, etc)
-
-5. kubectl
-
-
+Deploy the Three.js application to OCI by creating a Kubernetes cluster, setting up an Autonomous Database, creating environment variables for the application, deploying the application to the cluster using Helm, and configuring load balancing.
 
 ## Acknowledgements
 
 * **Author** - Victor Martin - Technology Product Strategy Director - EMEA
 * **Author** - Wojciech (Vojtech) Pluta - Developer Relations - Immersive Technology Lead
 * **Last Updated By/Date** - March, 2023
+
+## Stay tuned for more updates!
