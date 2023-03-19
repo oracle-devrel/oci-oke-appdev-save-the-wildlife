@@ -24,17 +24,17 @@ Estimated Lab Time: 15 minutes
 2. As soon as the Cloud Shell is loaded, you can retrieve the workshop assets for this lab.
 
     ```
-    <copy>git clone https://github.com/vmleon/oci-multiplayer</copy>
+    <copy>git clone https://github.com/oracle-devrel/devlive-save-the-wildlife</copy>
     ```
 
 3. The result will look like this:
 
     ![Git Clone](images/git-clone.png)
 
-4. Change directory with `cd` to `oci-multiplayer` directory:
+4. Change directory with `cd` to `devlive-save-the-wildlife` directory:
 
     ```
-    <copy>cd oci-multiplayer</copy>
+    <copy>cd devlive-save-the-wildlife</copy>
     ```
 
 5. Terraform uses a file called `tfvars` that contains variables used to communicate with the Oracle Cloud. You are going to copy the provided template file and input your own values. The the following command:
