@@ -261,7 +261,7 @@ In this 4th and final task, you will add the Container Instance private IP addre
 
     # Delete the existing load balancer backends
     oci lb backend delete --backend-name $serverBeName --backend-set-name lb-backend-set-server --load-balancer-id $lbOcid --force
-    oci lb backend delete --backend-name $webBeName --backend-set-name lb-backend-set-web--load-balancer-id $lbOcid --force
+    oci lb backend delete --backend-name $webBeName --backend-set-name lb-backend-set-web --load-balancer-id $lbOcid --force
 
     #Create new backends for the Container Instance resource
     oci lb backend create --backend-set-name lb-backend-set-server --ip-address $ciPrivIp --port 3000 --load-balancer-id $lbOcid
