@@ -88,23 +88,23 @@ In this task you will create a container image for both the server and the web p
 2. Copy the output string and store it in a safe place. Then create an environment variable as well.
 
     ```
-    <copy> export OCI_OCIR_TOKEN="[auth-token-here]"</copy>
+    <copy> export OCI_OCIR_TOKEN="<auth-token-here>"</copy>
     ```
 
-    _note:_ remove the square braces when pasting your auth token
+    _note:_ remove the `<>` when pasting your auth token
 
 3. Create an environment variable for your email address.
 
     ```
-    <copy>export OCI_OCIR_USER=[OCI_email_or_IAM_user_id]</copy>
+    <copy>export OCI_OCIR_USER=<OCI_email_or_IAM_user_id></copy>
     ```
 
     ![Export variables](images/ocir-variables.png)
 
-4. Make sure you're in the `oci-multiplayer` directory.
+4. Make sure you're in the `devlive-save-the-wildlife` directory.
 
     ```
-    <copy>cd ~/oci-multiplayer</copy>
+    <copy>cd ~/devlive-save-the-wildlife</copy>
     ```
 
 5. Run the script to set the environment. This script will
@@ -192,7 +192,7 @@ Now to grab just a few more pieces of information and launch the Container Insta
 
     Copy the values to your text file.
 
-    **_NOTE:_** If the **base64** command preduces a carriage return for the username, simply pasted into a text file and remove the carriage return
+    **_NOTE:_** If the **base64** command preduces a carriage return for the username, simply paste into a text file and remove the carriage return
 
 5. Copy the following command to a text file, modify the <placeholder> values, then paste into Cloud Shell.
 

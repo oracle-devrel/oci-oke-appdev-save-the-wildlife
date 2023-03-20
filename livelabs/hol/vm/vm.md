@@ -24,7 +24,7 @@ Estimated Lab Time: 15 minutes
 2. As soon as the Cloud Shell is loaded, you can retrieve the workshop assets for this lab.
 
     ```
-    <copy>git clone https://github.com/oracle-devrel/devlive-save-the-wildlife</copy>
+    <copy>git clone -b mvp https://github.com/oracle-devrel/devlive-save-the-wildlife</copy>
     ```
 
 3. The result will look like this:
@@ -123,7 +123,6 @@ Estimated Lab Time: 15 minutes
 5. And there you have it! Copy the _`lb_public_ip`_ value, open a new browser tab, and check it out.
 
     ![Script complete](images/script-04.png)
-
 
 
 
