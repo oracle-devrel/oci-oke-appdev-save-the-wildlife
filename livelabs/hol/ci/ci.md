@@ -243,7 +243,13 @@ In this 4th and final task, you will add the Container Instance private IP addre
     <copy>export ciPrivIp="<paste ip here>"</copy>
     ```
 
-2. Create an environment variable for the load balancer. This command will list all load balancers (should just be one) in the compartment named **`LB Multiplayer`**
+2. Locate the OCID for the Load Balancer that was created in Lab 1. It should be named **`LB Multiplayer`**
+
+    ```
+    <copy>lbOcid=($(oci lb load-balancer list -c $OCI_TENANCY --display-name "LB Multiplayer" --query 'data[0].id' --raw-output))</copy>
+    ```
+
+    **_note:_** Be sure to replace `$OCI_TENANCY` with the compartment OCID if you are not using the root compartment.
 
 3. Run the following series of commands.
 
@@ -263,9 +269,15 @@ In this 4th and final task, you will add the Container Instance private IP addre
     </copy>
     ```
 
+4. Check the status of your Load Balancer and proceed when you see the **OK** status.
+
+    ```
+    <copy>oci lb load-balancer-health get --load-balancer-id $lbOcid</copy>
+    ```
+
     ![LB Status Check](images/lb-status-check.png)
 
-4. Once you see the **OK** status, you can navigate to the load balancer public IP in your browser (return to the tab from lab one and refresh, or open a new window).
+5. Once you see the **OK** status, you can navigate to the load balancer public IP in your browser (return to the tab from lab one and refresh, or open a new window).
 
     ```
     <copy>oci lb load-balancer get --load-balancer-id $lbOcid --query 'data."ip-addresses"[0]."ip-address"' --raw-output</copy>
