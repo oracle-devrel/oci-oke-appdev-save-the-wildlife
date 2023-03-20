@@ -36,13 +36,6 @@ In this, you will:
 
 * [Basic familiarity with OKE](https://www.oracle.com/cloud/cloud-native/container-engine-kubernetes/)
 
-## Acknowledgements
-
-* **Author** - Victor Martin - Technology Product Strategy Director - EMEA
-* **Author** - Wojciech (Vojtech) Pluta - Developer Relations - Immersive Technology Lead
-* **Author** - Eli Schilling - Developer Relations - Cloud Native and DevOps
-* **Last Updated By/Date** - March, 2023
-
 ## Task 1: Create your Free Trial Account
 
 If you already have a cloud account, skip to the **Get Started** section.
@@ -112,3 +105,10 @@ If you already have a cloud account, skip to the **Get Started** section.
 13. Your account is provisioning and should be available soon! You might want to log out as you wait for your account to be provisioned. You'll receive two emails from Oracle. One email will be the initial notiifcation that provisioning is underway. The other email will be a notificaiton that provisioning is complete. Here is a copy of the final notificaiton:
 
     ![Final notification](images/account-provisioned.png)
+
+## Acknowledgements
+
+* **Author** - Victor Martin - Technology Product Strategy Director - EMEA
+* **Author** - Wojciech (Vojtech) Pluta - Developer Relations - Immersive Technology Lead
+* **Author** - Eli Schilling - Developer Relations - Cloud Native and DevOps
+* **Last Updated By/Date** - March, 2023
