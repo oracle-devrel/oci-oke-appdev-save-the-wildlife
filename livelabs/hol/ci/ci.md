@@ -220,7 +220,7 @@ Now to grab just a few more pieces of information and launch the Container Insta
     - _--image-pull-secrets_ - This specifies the image pull secrets to be used by the container instance. This is an array of JSON objects, with each object representing an image pull secret. Username and password must be **base64** encoded
     - _--config-file_ ~/.oci/config - This specifies the configuration file to be used for the OCI CLI.
     - _--profile_ WORKSHOP - This specifies the OCI CLI profile to use.
-    - _--auth api_key_ - This specifies the authentication method to be used for the OCI CLI.
+    - _--auth api key_ - This specifies the authentication method to be used for the OCI CLI.
 
 
         ![Create Container Instance](images/cli-create-CI.png)
