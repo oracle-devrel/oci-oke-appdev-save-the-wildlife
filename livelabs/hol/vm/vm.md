@@ -37,13 +37,19 @@ Estimated Lab Time: 15 minutes
     <copy>cd devlive-save-the-wildlife</copy>
     ```
 
-5. Terraform uses a file called `tfvars` that contains variables used to communicate with the Oracle Cloud. You are going to copy the provided template file and input your own values. The the following command:
+5. Checkout your git branch to `mvp`:
+
+    ```
+    <copy>git checkout mvp</copy>
+    ```
+
+6. Terraform uses a file called `tfvars` that contains variables used to communicate with the Oracle Cloud. You are going to copy the provided template file and input your own values. The the following command:
 
     ```
     <copy>cp deploy/vm/terraform/terraform.tfvars.template deploy/vm/terraform/terraform.tfvars</copy>
     ```
 
-6. And finally, you will need to create an SSH key pair. It will primarily be used by Ansible to apply configuration to your Compute instances, but you can also use it if you want to log into either of the servers.
+7. And finally, you will need to create an SSH key pair. It will primarily be used by Ansible to apply configuration to your Compute instances, but you can also use it if you want to log into either of the servers.
 
     ```
     <copy>ssh-keygen -b 2048 -t rsa</copy>
