@@ -1,5 +1,5 @@
 config_file_profile  = "DEFAULT"
 tenancy_ocid = "ocid1.tenancy.oc1..xxxxx"
-region = "uk-london-1"
+region = "xxxxx" // your cloud region i.e. uk-london-1
 compartment_ocid     = "ocid1.compartment.oc1..xxxxx"
 ssh_public_key       = "xxxxx"
