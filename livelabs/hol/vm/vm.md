@@ -37,12 +37,6 @@ Estimated Lab Time: 15 minutes
     <copy>cd devlive-save-the-wildlife</copy>
     ```
 
-5. Checkout your git branch to `mvp`:
-
-    ```
-    <copy>git checkout mvp</copy>
-    ```
-
 6. Terraform uses a file called `tfvars` that contains variables used to communicate with the Oracle Cloud. You are going to copy the provided template file and input your own values. The the following command:
 
     ```
