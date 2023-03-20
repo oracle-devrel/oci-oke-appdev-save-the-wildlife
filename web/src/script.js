@@ -600,15 +600,16 @@ async function init() {
     const offsetY = -0.5;
 
     for (let i = 0; i < particleCount; i++) {
-      vertices.push(position.x + Math.random() - 0.5);
-      vertices.push(position.y + offsetY + Math.random() * 0.5);
-      vertices.push(position.z + Math.random() - 0.5);
+      const radius = Math.random() * 0.5;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.random() * Math.PI - Math.PI/2;
+      const x = position.x + radius * Math.cos(theta) * Math.cos(phi);
+      const y = position.y + offsetY + radius * Math.sin(phi);
+      const z = position.z + radius * Math.sin(theta) * Math.cos(phi);
+      vertices.push(x, y, z);
     }
 
-    geometry.setAttribute(
-      "position",
-      new THREE.Float32BufferAttribute(vertices, 3)
-    );
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
 
     const material = new THREE.PointsMaterial({
       size: 0.1,
@@ -622,7 +623,7 @@ async function init() {
     particles.lifetime = 0.2; // in seconds
     scene.add(particles);
     return particles;
-  }
+}
 
   function updatePlayerPosition() {
     if (!player || !water || gameOverFlag) {
