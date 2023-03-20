@@ -2,11 +2,17 @@
 
 ## The power of Cloud Native on Oracle Cloud
 
-In this workshop you will learn how to deploy a simple Three.js application to the cloud, then iterate through the modernization process to enhance the application and ultimately deploy to Kubernetes.
+[![License: UPL](https://img.shields.io/badge/license-UPL-green)](https://img.shields.io/badge/license-UPL-green) [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=oracle-devrel_devlive-save-the-wildlife)](https://sonarcloud.io/dashboard?id=oracle-devrel_devlive-save-the-wildlife)
 
-When building and deploying applications in the cloud it is important to understand the capabilities provided by the cloud and learn to align those with the requirements of your application. Whether starting with an enhancing a simple application, or deconstructing a legacy monolith, there are a variety of choices to help right-size your solution.
+# Introduction
+![Game](images/logoPlusOCI.png)
+![Game](images/stwl.gif)
 
-![OKE Logo](images/oke.png)
+Thank you for choosing DevLive-Save-the-Wildlife! This workshop is a valuable opportunity to enhance your cloud computing skills and learn how to build and deploy multiplayer applications in the cloud. With Cloud Native on Oracle Cloud, you'll discover the power of deploying a Three.js application to the cloud, modernizing it, and enhancing it with immersive experiences for Metaverse and Gaming.  
+
+Three.js is a popular JavaScript library for creating 3D graphics and animations in web browsers, and there are other options available, such as Babylon.js and A-Frame. The principles of 3D graphics and animation are transferable between these libraries, and the backend and concurrency management principles that are essential for Metaverse applications are also applicable across all three libraries. Part 1 of this workshop will focus on Three.js, but we will cover other options in the future.
+
+With Three.js and Cloud Native on Oracle Cloud, you can create engaging Metaverse applications for your customers, employees, and partners. Whether it's virtual showrooms, immersive training simulations, product demonstrations, or games, Three.js and Cloud Native on Oracle Cloud provide the scalability, performance, and availability you need to succeed in the Metaverse.
 
 Estimated Lab Time: 60 minutes
 
