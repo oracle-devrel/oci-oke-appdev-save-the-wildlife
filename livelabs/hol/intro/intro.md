@@ -1,34 +1,32 @@
 # Introduction
 
-## The power of Cloud Native on Oracle Cloud
+## Introduction - The power of Cloud Native on Oracle Cloud
 
-[![License: UPL](https://img.shields.io/badge/license-UPL-green)](https://img.shields.io/badge/license-UPL-green) [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=oracle-devrel_devlive-save-the-wildlife)](https://sonarcloud.io/dashboard?id=oracle-devrel_devlive-save-the-wildlife)
+![save the wildlife logo](images/logoPlusOCI.png)
 
-# Introduction
-![Game](images/logoPlusOCI.png)
-![Game](images/stwl.gif)
+![save the wildlife game visualized](images/stwl.gif)
 
-Thank you for choosing DevLive-Save-the-Wildlife! This workshop is a valuable opportunity to enhance your cloud computing skills and learn how to build and deploy multiplayer applications in the cloud. With Cloud Native on Oracle Cloud, you'll discover the power of deploying a Three.js application to the cloud, modernizing it, and enhancing it with immersive experiences for Metaverse and Gaming.  
+Thank you for choosing **DevLive-Save-the-Wildlife**! This workshop is a valuable opportunity to enhance your cloud computing skills and learn how to build and deploy multiplayer applications in the cloud. With Cloud Native on Oracle Cloud, you'll discover the power of deploying a _`Three.js`_ application to the cloud, modernizing it, and enhancing it with immersive experiences for Metaverse and Gaming.  
 
-Three.js is a popular JavaScript library for creating 3D graphics and animations in web browsers, and there are other options available, such as Babylon.js and A-Frame. The principles of 3D graphics and animation are transferable between these libraries, and the backend and concurrency management principles that are essential for Metaverse applications are also applicable across all three libraries. Part 1 of this workshop will focus on Three.js, but we will cover other options in the future.
+_`Three.js`_ is a popular JavaScript library for creating 3D graphics and animations in web browsers, and there are other options available, such as _`Babylon.js`_ and _`A-Frame`_. The principles of 3D graphics and animation are transferable between these libraries, and the backend and concurrency management principles that are essential for Metaverse applications are also applicable across all three libraries. Part 1 of this workshop will focus on _`Three.js`_, but we will cover other options in the future.
 
-With Three.js and Cloud Native on Oracle Cloud, you can create engaging Metaverse applications for your customers, employees, and partners. Whether it's virtual showrooms, immersive training simulations, product demonstrations, or games, Three.js and Cloud Native on Oracle Cloud provide the scalability, performance, and availability you need to succeed in the Metaverse.
+With _`Three.js`_ and Cloud Native on Oracle Cloud, you can create engaging Metaverse applications for your customers, employees, and partners. Whether it's virtual showrooms, immersive training simulations, product demonstrations, or games, _`Three.js`_ and Cloud Native on Oracle Cloud provide the scalability, performance, and availability you need to succeed in the Metaverse.
 
 Estimated Lab Time: 60 minutes
 
 ### Objectives
-In this, you will:
+In this workshop, you will learn how to:
 
-* Deploy a simple Three.js application to OCI Compute with Terraform, using Ansible to provide all requisite app configuration.
+* Deploy a simple Three.js application to OCI Compute with Terraform, using Ansible to provide all requisite app configurations.
 
-* Create container images of the application components and migrate to OCI Container Images.
+* Create container images of the application components and migrate them to OCI Container Images.
 
-* Add Redis and and NginX controller to your application to support scalability, while deploying to Oracle Container Engine for Kubernetes (OKE).
+* Add _`Redis`_ and _`NginX`_ controller to your application to support scalability, while deploying to Oracle Container Engine for Kubernetes (OKE).
 
 ### Prerequisites
 
 * An Oracle Free Tier or Paid Cloud Account
-* [Familiarity with the OCI console](https://docs.us-phoenix-1.oraclecloud.com/Content/GSG/Concepts/console.htm)
+* [Familiarity with the OCI console](https://docs.oracle.com/en-us/iaas/Content/GSG/Concepts/console.htm)
 
 * Basic familiarity with app containerization
 
@@ -40,19 +38,19 @@ In this, you will:
 
 If you already have a cloud account, skip to the **Get Started** section.
 
-1. Open up another browser window ro tab to access the Oracle Cloud account registration form at [oracle.com/cloud/free](https://signup.cloud.oracle.com/)
+1. Open up another browser window or tab to access the Oracle Cloud account registration form at [oracle.com/cloud/free](https://signup.cloud.oracle.com/)
 
     You will be presented with a registration page.
 
     ![Sign-up page](images/cloud-infrastructure.png)
 
-2. Enter the following informaiton to create your Oracle Cloud Free Tier Account.
+2. Enter the following information to create your Oracle Cloud Free Tier Account.
 
     * Choose your **Country**
 
     * Enter your **Name** and **Email**
 
-3. Once you have entered a valid email address, select the **Verity my email** button.The screen will appear as follows after you select the button:
+3. Once you have entered a valid email address, select the **Verify my email** button. The screen will appear as follows after you select the button:
 
     ![Email verification](images/verify-email.png)
 
@@ -102,7 +100,7 @@ If you already have a cloud account, skip to the **Get Started** section.
 
     ![Agreement](images/free-tier-agreement.png)
 
-13. Your account is provisioning and should be available soon! You might want to log out as you wait for your account to be provisioned. You'll receive two emails from Oracle. One email will be the initial notiifcation that provisioning is underway. The other email will be a notificaiton that provisioning is complete. Here is a copy of the final notificaiton:
+13. Your account is provisioning and should be available soon! You might want to log out as you wait for your account to be provisioned. You'll receive two emails from Oracle: one will be the initial notification that provisioning is underway, and the second one will be about provisioning finishing up:
 
     ![Final notification](images/account-provisioned.png)
 

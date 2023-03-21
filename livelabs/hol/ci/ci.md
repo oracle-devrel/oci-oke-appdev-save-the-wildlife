@@ -2,11 +2,11 @@
 
 ## Introduction
 
-In this lab we will create container images for the application components and deploy them to the Container Instances service. Container Instances is an excellent tool for running containerized applications, without the need to manage any underlying infrastructure. Just deploy and go.
+In this lab, we will create container images for the application components and deploy them to the Container Instances service. Container Instances are an excellent tool for running containerized applications, without the need to manage any underlying infrastructure. Just deploy and go.
 
 To help streamline the process, you'll use a custom script to create and publish container images to the OCI Container Registry. Container Registry makes it easy to store, share, and managed container images. Registries can be private (default) or public.
 
-**_Important_** The instructions in this lab are designed around the Cloud Shell and utilize some of the built-in session variables. Should you choose to complete this outside of cloud shell, you will need to locate those resource OCID's manually (Web UI or OCI CLI).
+> **Note**: the instructions in this lab are designed around the Cloud Shell and utilize some of the built-in session variables. Should you choose to complete this outside of Cloud Shell, you will need to obtain these resource OCID's manually (through the OCI Panel or OCI CLI).
 
 Estimated Lab Time: 15 minutes
 
@@ -16,13 +16,13 @@ Estimated Lab Time: 15 minutes
 
 * An Oracle Free Tier or Paid Cloud Account
 
-## Task 1: Configure alternate CLI Authentication
+## Task 1: Configure Alternative CLI Authentication
 
-While the cloud shell is pre-configured to authenticate based on logged-on user credentials, it can be quite useful to understand how easy it is to leverage alternate authenticate methods. The following is also useful when leveraging the OCI CLI outside of Cloud Shell.
+While OCI Cloud Shell is pre-configured to authenticate us based on logged-on user credentials, it can be quite useful to understand how easy it is to leverage alternative authenticate methods. The following is also useful when leveraging the OCI CLI outside of Cloud Shell.
 
-In this section we will configure the CLI to use APIKey-based authentication.
+In this section, we will configure the CLI to an APIKey-based authentication.
 
-1. Obtain user OCID - click the _Profile_ icon in the top right of the cloud console, then click your username.
+1. Obtain our user's OCID - click the _Profile_ icon in the top right of the cloud console, then click on your username.
 
     ![Profile icon](images/get-user-id-01.png)
 
@@ -31,13 +31,13 @@ In this section we will configure the CLI to use APIKey-based authentication.
     ![User OCID](images/get-user-id-02.png)
 
 
-3. Return to Cloud Shell and retrieve your tenancy OCID. Store it in a temporary location (i.e. text file).
+3. Now, we return to our Cloud Shell instance and retrieve the tenancy OCID. Copy it somewhere for now, like a text file.
 
     ```
     <copy>echo $OCI_TENANCY</copy>
     ```
 
-4. Initiate CLI configuration.
+4. Initiate CLI configuration by running:
 
     ```
     <copy>oci setup config</copy>
@@ -50,11 +50,11 @@ In this section we will configure the CLI to use APIKey-based authentication.
 
     ![Setup Config 2](images/cli-config-02.png)
 
-    **_note:_** For this step I have opted to assign a profile name of `workshop`. If you do not set a value, it will become `DEFAULT`. Profile name is always stored in ALL CAPS and must be referenced accordingly.
+    > **Note**: For this step, we have assigned a profile name of `workshop`. If you choose not to set a value, the value will be _`'DEFAULT'`_. The profile name is always stored in ALL CAPS and must be referenced accordingly.
 
 6. When asked whether to create a new `API Signing RSA key pair`, type 'Y' and press enter, then continue pressing enter to accept all defaults.
 
-7. Now...we can utilize the built-in authentication in Cloud Shell to upload the public portion of the API signing key to our user profile.
+7. Now, we can utilize OCI Cloud Shell's built-in authentication to upload the public portion of the API signing key to our user profile.
 
     ```
     <copy>oci iam user api-key upload --user-id <paste user OCID> --key-file ~/.oci/oci_api_key_public.pem</copy>
@@ -62,38 +62,38 @@ In this section we will configure the CLI to use APIKey-based authentication.
 
     ![API Key Upload](images/api-key-upload.png)
 
-8. Time to test it out!
+8. Now, we just have to test it out, by running the following command:
 
     ```
     <copy>oci iam availability-domain list --auth api_key --profile WORKSHOP --config-file ~/.oci/config</copy>
     ```
 
-    **_NOTE:_** The profile name you entered will automatically be converted to all CAPS. Make sure to do the same when you enter the CLI command.
+    > **Note**: The profile name you entered will automatically be converted to all CAPS. Make sure to do the same when you enter the CLI command.
 
-9. You should see either 1 or 3 AZs depending on which region you are using.
+9. You should see either 1 or 3 Availability Domains (ADs), depending on which region you're subscribed to in OCI. In this case, we have three ADs:
 
     ![CLI Test](images/cli-test.png)
 
 
-## Task 2: Containerize the application
+## Task 2: Containerize the Application
 
-In this task you will create a container image for both the server and the web pieces of the application. The container images will be stored in the OCI Container Registry for deployment to Container Instances (and eventually OKE).
+In this task, you will create a container image for both the server and the web pieces of the application. The container images will be stored in the OCI Container Registry for deployment to Container Instances (and eventually OKE).
 
-1. Generate an Auth token for your cloud user; this is required to authenticate to OCI Container Registry.
+1. Generate an Auth Token for your Cloud user; this is required to authenticate to OCI Container Registry.
 
     ```
     <copy>oci iam auth-token create --description "DevLive-Workshop" --user-id <paste user OCID> --query 'data.token' --raw-output</copy>
     ```
 
-2. Copy the output string and store it in a safe place. Then create an environment variable as well.
+2. Then, we copy the output string and store it somewhere safe. We will also create an environment variable to carry our auth token:
 
     ```
     <copy> export OCI_OCIR_TOKEN="<auth-token-here>"</copy>
     ```
 
-    _note:_ remove the `<>` when pasting your auth token
+    > **Note**: remove the `<>` when pasting your auth token.
 
-3. Create an environment variable for your email address.
+3. We will also create an environment variable to hold our email address: 
 
     ```
     <copy>export OCI_OCIR_USER=<OCI_email_or_IAM_user_id></copy>
@@ -101,66 +101,66 @@ In this task you will create a container image for both the server and the web p
 
     ![Export variables](images/ocir-variables.png)
 
-4. Make sure you're in the `devlive-save-the-wildlife` directory.
+4. Making sure that we're in the right directory (`devlive-save-the-wildlife`) before we do anything else, let's execute:
 
     ```
     <copy>cd ~/devlive-save-the-wildlife</copy>
     ```
 
-5. Run the script to set the environment. This script will
+5. Then, we run the _`npx`_ script to set the environment. This script will:
 
-    * check dependencies
+    * Check dependencies on the environment
 
-    * create self-signed certificates, if needed
+    * Create self-signed certificates, if necessary
 
-    * log into the container registry to validate credentials
+    * Log into the container registry to validate credentials
 
-    * print component versions
+    * Print component versions
 
     ```
     <copy>npx zx scripts/setenv.mjs</copy>
     ```
 
-6. Create and publish the **`server`** container image.
+6. We then create and publish the **`server`** container image by executing the following command:
 
     ```
     <copy>npx zx scripts/release.mjs server</copy>
     ```
 
-7. Copy the `Released:` path at the end of the command execution and store it in a text document.
+7. After the server container image has been published, we will copy the `Released:` path (which we can find at the above command's output) and store it in a text document.
 
     ![Server release path](images/release-server-01.png)
 
-8. Create and publish the **`web`** container image.
+8. And now, we repeat the same process, but the purpose now is to create and publish the **`web`** container image as well:
 
     ```
     <copy>npx zx scripts/release.mjs web</copy>
     ```
 
-9. Copy the `Released:` path for this one as well; store it in a text documnt.
+9. Finally, we repeat step 7 and copy the `Released:` path and save it in a text document for now.
 
 
 ## Task 3: Deploy to Container Instances
 
-Now to grab just a few more pieces of information and launch the Container Instances resource.
+Now that both images have been created and published, we just need to grab just a few more pieces of information and launch the Container Instances resource.
 
-**_NOTE:_** If you are using a custom compartment for the workshop (not the root compartment) make sure to replace any occurrence of `$OCI_TENANCY` with the full compartment OCID.
+> **Note**: If you are using a custom compartment for the workshop (not the root compartment) make sure to replace any occurrence of `$OCI_TENANCY` with the full compartment OCID.
 
-1. You may either navigate the OCI console to locate the OCID of your subnet, or run the following CLI command. Copy the Subnet OCID to a text file.
+1. You may either navigate the OCI console to locate the OCID of your subnet or run the following CLI command. Copy the Subnet OCID to a text file.
 
     ```
     <copy>oci network subnet list -c $OCI_TENANCY --display-name "multiplayer public subnet" --query 'data[0].id' --raw-output</copy>
     ```
 
-    _note:_ if you are not using the root compartment, replace `$OCI_TENANCY` with the OCID of your chosen compartment.
+    > **Note**: if you aren't working within your tenancy's root compartment, replace the `$OCI_TENANCY` environment variable with the compartment OCID that you're using.
 
-2. Retrieve the Availability Domain label and copy to a text file.
+2. Retrieve the Availability Domain (AD) name and copy it to a text file.
 
     ```
     <copy>oci iam availability-domain list --query 'data[?contains ("name",`AD-1`)]|[0].name' --raw-output</copy>
     ```
 
-3. Retrieve the object storage namespace. This is required when logging in with a federated user (default for `Always Free` accounts).
+3. Retrieve the OCI Object Storage namespace. This is required when logging in with a federated user (default for `Always Free` accounts).
 
     ```
     <copy>oci os ns get -c $OCI_TENANCY --query 'data' --raw-output</copy>
@@ -168,9 +168,9 @@ Now to grab just a few more pieces of information and launch the Container Insta
 
     ![Get OS Namespace](images/get-os-namespace.png)
 
-4. Finally - you'll need to convert your OCIR username and auth token / password to _base64_ as requirec by the CLI.
+4. Finally - you'll need to convert your OCIR username and auth token/password to _base64_ format, as required by the CLI. For that, depending on your account's authentication status (federated user or IAM user), here are the commands required to achieve this conversion: 
 
-    - For federated users (default):
+    - For federated users (you'll most likely be in this group):
 
         ```
         <copy>
@@ -178,6 +178,8 @@ Now to grab just a few more pieces of information and launch the Container Insta
         echo -n '<auth token>' | base64
         </copy>
         ```
+
+        Here's an example of running the conversion:
 
         ![Federated users](images/base64-federated.png)
 
@@ -190,11 +192,11 @@ Now to grab just a few more pieces of information and launch the Container Insta
         </copy>
         ```
 
-    Copy the values to your text file.
+    And remember to copy the newly generated base64-formatted values to a text file.
 
-    **_NOTE:_** If the **base64** command preduces a carriage return for the username, simply paste into a text file and remove the carriage return
+    > **Note**: if the **base64** output produces a new line or a carriage return character after the username, simply paste the output into a text file and strip it from these special characters.
 
-5. Copy the following command to a text file, modify the <placeholder> values, then paste into Cloud Shell.
+5. Copy the following command to a text file, modify the <placeholder> values, then paste the full, edited command into your Cloud Shell instance:
 
     ```
     <copy>oci container-instances container-instance create --display-name oci-MultiPlayer \
@@ -206,10 +208,10 @@ Now to grab just a few more pieces of information and launch the Container Insta
     --config-file ~/.oci/config --profile WORKSHOP --auth api_key</copy>
     ```
 
-   _The command will look something like this (notice we created variables for a few of the parameter values - totally optional):_
+   The command will look something like this (notice we created variables for a few of the parameter values - totally optional):
 
     Here's a breakdown of the command:
-    - _oci container-instances container-instance create_ - This is the core cli command with service name, service component, and action to take `create`.   
+    - _oci container-instances container-instance create_ - This is the core cli command with the service name, service component, and action to take `create`.   
     - _--display-name_ oci-MultiPlayer - This is the display name for the container instance.  
     - _--availability-domain_ <AD Name> - This specifies the availability domain in which to create the container instance.
     - _--compartment-id_ <Compartment OCID> - This specifies the compartment in which the container instance will be created.
@@ -217,7 +219,7 @@ Now to grab just a few more pieces of information and launch the Container Insta
     - _--shape_ CI.Standard.E4.Flex - This specifies the shape of the container instance.
     - _--shape-config_ '{"memoryInGBs":16,"ocpus":4}' - This specifies the shape configuration for the container instance.
     - _--vnics_ - This specifies the virtual network interfaces to be attached to the container instance. This is an array of JSON objects, with each object representing a virtual network interface.
-    - _--image-pull-secrets_ - This specifies the image pull secrets to be used by the container instance. This is an array of JSON objects, with each object representing an image pull secret. Username and password must be **base64** encoded
+    - _--image-pull-secrets_ - This specifies the image-pull secrets to be used by the container instance. This is an array of JSON objects, with each object representing an image pull secret. The username and password must be **base64** encoded
     - _--config-file_ ~/.oci/config - This specifies the configuration file to be used for the OCI CLI.
     - _--profile_ WORKSHOP - This specifies the OCI CLI profile to use.
     - _--auth api key_ - This specifies the authentication method to be used for the OCI CLI.
@@ -229,41 +231,41 @@ Now to grab just a few more pieces of information and launch the Container Insta
 
     ![CI Related Containers](images/ContainerInstance-containers.png)
 
-7. Locate the private IP address for your Container Instance.
+7. Locate the private IP address for your Container Instance:
 
     ![CI Private IP](images/ContainerInstance-privateIp.png)
 
 ## Task 4: Modify the Load Balancer
 
-In this 4th and final task, you will add the Container Instance private IP address to the backend set of the load balancer that was deployed as part of the first lab.
+In this fourth and final task, we need to add the Container Instance private IP address to the *backend set* of our Load Balancer (which was deployed as part of the first lab).
 
-1. Create an environment variable for the private IP address of your Container Instance.
+1. Create an environment variable for the private IP address of your Container Instance:
 
     ```
     <copy>export ciPrivIp="<paste ip here>"</copy>
     ```
 
-2. Locate the OCID for the Load Balancer that was created in Lab 1. It should be named **`LB Multiplayer`**
+2. Locate the OCID for the Load Balancer that was created in Lab 1. It should be named **`LB Multiplayer`**:
 
     ```
     <copy>lbOcid=($(oci lb load-balancer list -c $OCI_TENANCY --display-name "LB Multiplayer" --query 'data[0].id' --raw-output))</copy>
     ```
 
-    **_note:_** Be sure to replace `$OCI_TENANCY` with the compartment OCID if you are not using the root compartment.
+    > **Note**: Make sure to replace `$OCI_TENANCY` with the compartment OCID if you are not using the root compartment.
 
-3. Run the following series of commands.
+3. Run the following commands:
 
     ```
     <copy>
-    #Retrieve the existing load balancer backends
+    #Retrieve the existing load balancer backends:
     serverBeName=($(oci lb backend list --backend-set-name lb-backend-set-server --load-balancer-id $lbOcid --query 'data[0].name' --raw-output))
     webBeName=($(oci lb backend list --backend-set-name lb-backend-set-web --load-balancer-id $lbOcid --query 'data[0].name' --raw-output))
 
-    # Delete the existing load balancer backends
+    # Delete the existing load balancer backends:
     oci lb backend delete --backend-name $serverBeName --backend-set-name lb-backend-set-server --load-balancer-id $lbOcid --force
     oci lb backend delete --backend-name $webBeName --backend-set-name lb-backend-set-web --load-balancer-id $lbOcid --force
 
-    #Create new backends for the Container Instance resource
+    #Create new backends for the Container Instance resource:
     oci lb backend create --backend-set-name lb-backend-set-server --ip-address $ciPrivIp --port 3000 --load-balancer-id $lbOcid
     oci lb backend create --backend-set-name lb-backend-set-web --ip-address $ciPrivIp --port 80 --load-balancer-id $lbOcid
     </copy>
@@ -290,4 +292,4 @@ In this 4th and final task, you will add the Container Instance private IP addre
 * **Author** - Victor Martin - Technology Product Strategy Director - EMEA
 * **Author** - Wojciech (Vojtech) Pluta - Developer Relations - Immersive Technology Lead
 * **Author** - Eli Schilling - Developer Advocate - Cloud Native and DevOps
-* **Last Updated By/Date** - March, 2023
+* **Last Updated By/Date** - March 21st, 2023

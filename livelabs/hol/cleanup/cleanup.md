@@ -2,11 +2,11 @@
 
 ## Destroy Infrastructure
 
-All good things must come to an end...but only if you want them to. In this lab you will destroy the resources created earlier in the workshop. Of course, if you'd like to continue to experiment, you can skip this part and leave everything running.
+All good things must come to an end... but only if you want them to. In this lab, you will destroy the resources we've created during this workshop.
 
+Of course, if you'd like to continue to experiment, you can skip this part and leave everything running.
 
-![Cleanup](images/CleanUp.jpg)
-
+![cleaning up resources](images/CleanUp.jpg)
 
 Estimated Lab Time: 10 minutes
 
@@ -15,7 +15,7 @@ Estimated Lab Time: 10 minutes
 * An Oracle Free Tier, Paid or LiveLabs Cloud Account
 
 
-## Task 1: Remove Container Instances components
+## Task 1: Remove Container Instance Components
 
 1. Return to the OCI Cloud Shell.
 
@@ -46,7 +46,7 @@ Estimated Lab Time: 10 minutes
     <copy>./scripts/stop_VM.sh</copy>
     ```
 
-3. Once that completes, it should remove all of the items deployed in **Lab 1**
+3. Once that completes, it should remove all of the items deployed in **Lab 1**.
 
 
 ## Acknowledgements
@@ -54,4 +54,4 @@ Estimated Lab Time: 10 minutes
 * **Author** - Victor Martin - Technology Product Strategy Director - EMEA
 * **Author** - Wojciech (Vojtech) Pluta - Developer Relations - Immersive Technology Lead
 * **Author** - Eli Schilling - Developer Advocate - Cloud Native and DevOps
-* **Last Updated By/Date** - March, 2023
+* **Last Updated By/Date** - March 21st, 2023

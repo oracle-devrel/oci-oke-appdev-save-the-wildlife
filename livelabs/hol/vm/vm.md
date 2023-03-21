@@ -2,11 +2,11 @@
 
 ## Introduction
 
-In this lab you will complete the process of deploying the first form of the Three.js app to the Oracle Cloud. The deployment process utilizes Terraform and Ansible, however, we've provided a script to help streamline the process.
+In this lab, you will complete the process of deploying the first form of the _`Three.js`_ app to the Oracle Cloud. The deployment process utilizes *Terraform* and *Ansible*, however, we've provided a script to help streamline the process.
 
-Terraform is an Open Source tool to deploy resources in the cloud using code. This method is typically referred to as Infrastructure as Code (IaC). Terraform configuration is declarative; you simply define what you want in the Oracle Cloud and it ensures the resources are created to your speciications.
+Terraform is an Open Source tool to deploy resources in the cloud using code. This method is typically referred to as Infrastructure as Code (IaC). Terraform configuration is declarative; you simply define what you want in the Oracle Cloud and it ensures the resources are created to your specifications.
 
-Ansible is na open source tool that provides both configuration management and infrastructure as code. For this workshop, we leverage the configuration management functionality. Once Terraform deploys the infrastructure, Ansible will establish a remote SSH connection to the servers and apply the requisite confniguration (app install, file downloads, configuration settings, etc.)
+Ansible is an open source tool that provides both configuration management and infrastructure as code. For this workshop, we leverage the configuration management functionality. Once Terraform deploys the infrastructure, Ansible will establish a remote SSH connection to the servers and apply the required procedures (installing the app, downloading files, adjusting settings, etc.)
 
 Estimated Lab Time: 15 minutes
 
@@ -31,25 +31,25 @@ Estimated Lab Time: 15 minutes
 
     ![Git Clone](images/git-clone.png)
 
-4. Change directory with `cd` to `devlive-save-the-wildlife` directory:
+4. Change the directory with `cd` to `devlive-save-the-wildlife` directory:
 
     ```
     <copy>cd devlive-save-the-wildlife</copy>
     ```
 
-6. Terraform uses a file called `tfvars` that contains variables used to communicate with the Oracle Cloud. You are going to copy the provided template file and input your own values. The the following command:
+6. Terraform uses a file called `tfvars` that contains variables used to communicate with the Oracle Cloud. You are going to copy the provided template file and input your own values. Then, run the following command:
 
     ```
     <copy>cp deploy/vm/terraform/terraform.tfvars.template deploy/vm/terraform/terraform.tfvars</copy>
     ```
 
-7. And finally, you will need to create an SSH key pair. It will primarily be used by Ansible to apply configuration to your Compute instances, but you can also use it if you want to log into either of the servers.
+7. And finally, you will need to create an SSH key pair. It will primarily be used by Ansible to apply configurations to your Compute instances, but you can also use it if you want to log into either of the servers.
 
     ```
     <copy>ssh-keygen -b 2048 -t rsa</copy>
     ```
 
-    Accepting the defaults will create a private key `id_rsa` and public key `id_rsa.pub` in a _.ssh_ folder under the home directory.
+    Accepting the defaults will create a private key `id_rsa` and a public key `id_rsa.pub` in a _.ssh_ folder under the home directory.
 
 
 ## Task 2: Configure Terraform
@@ -58,11 +58,11 @@ Estimated Lab Time: 15 minutes
 
     ![Code Editor](images/code-editor.png)
 
-2. Within the Explorer section of the code editor, exand your username and navigate to _`deploy/vm/terraform`_. You should see the file **`terraform.tfvars`** - select that.
+2. Within the Explorer section of the code editor, expand your username and navigate to _`deploy/vm/terraform`_. You should see the **`terraform.tfvars`** file - select that.
 
     ![Edit tfvars file](images/edit-tfvars.png)
 
-3. The file will open and you can copy the values obtained from running the next several commands. You can copy from Cloud Shell and pasted into Code Editor.
+3. The file will open and you can copy the values obtained from running the next several commands. You can copy it from Cloud Shell and paste into Code Editor.
 
 4. Copy the output of the following command as the tenancy OCID:
     ```
@@ -88,7 +88,7 @@ Estimated Lab Time: 15 minutes
     > <copy>oci iam compartment list --all --compartment-id-in-subtree true --query "data[].id" --name COMPARTMENT_NAME</copy>
     > ```
 
-6. And finally, retrieve the contents of your public SSH key and add to the file.
+6. And finally, retrieve the contents of your public SSH key and add them to the file.
 
     ```
     <copy>cat ~/.ssh/id_rsa.pub</copy>
@@ -116,11 +116,11 @@ Estimated Lab Time: 15 minutes
 
     ![Terraform deployment](images/script-02.png)
 
-4. Note that once the Terraform deployment is complete, it will print the public IP addresses of the two servers and the load balancer that were created. No need to capture these now, we'll print them on the screen at the end.
+4. Note that once the Terraform deployment is complete, it will print the public IP addresses of the two servers and the *Load Balancer* that were created. No need to capture these now, we'll print them on the screen at the end.
 
     ![Ansible configuration](images/script-03.png)
 
-5. And there you have it! Copy the _`lb_public_ip`_ value, open a new browser tab, and check it out.
+5. And there you have it! Copy the _`lb_public_ip`_ value (corresponding to the Load Balancer), open a new browser tab, and check it out.
 
     ![Script complete](images/script-04.png)
 
@@ -131,4 +131,4 @@ Estimated Lab Time: 15 minutes
 * **Author** - Victor Martin - Technology Product Strategy Director - EMEA
 * **Author** - Wojciech (Vojtech) Pluta - Developer Relations - Immersive Technology Lead
 * **Author** - Eli Schilling - Developer Advocate - Cloud Native and DevOps
-* **Last Updated By/Date** - March, 2023
+* **Last Updated By/Date** - March 21st, 2023
