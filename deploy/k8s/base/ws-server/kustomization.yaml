@@ -1,7 +1,8 @@
 resources:
-  - redis-storage.yaml
   - redis-svc.yaml
   - redis.yaml
+  - coherence-svc.yaml
+  - coherence.yaml
   - ws-server.yaml
   - ws-server-svc.yaml
 configMapGenerator:

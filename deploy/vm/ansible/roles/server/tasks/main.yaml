@@ -5,7 +5,7 @@
     update_cache: yes
 - name: Copy server files
   copy:
-    src: "../../../../../../server/{{ item }}"
+    src: ../../../../../server/
     dest: /home/opc/server/
     owner: opc
   with_items:

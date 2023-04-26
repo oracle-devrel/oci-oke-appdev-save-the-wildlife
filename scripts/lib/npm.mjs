@@ -36,6 +36,7 @@ export async function buildWeb() {
     await $`npm install`;
     console.log(`Build static content`);
     const output = (await $`npm run build`).stdout.trim();
+    console.log(output);
     console.log(`${chalk.green("Web")} built successfully`);
   } catch (error) {
     exitWithError(error.stderr);

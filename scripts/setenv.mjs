@@ -5,8 +5,15 @@ import {
   getVersion,
   getNamespace,
   setVariableFromEnvOrPrompt,
+  writeEnvJson,
+  generateRandomString,
+  readEnvJson,
 } from "./lib/utils.mjs";
-import { getRegions } from "./lib/oci.mjs";
+import {
+  getRegions,
+  getTenancyId,
+  searchCompartmentIdByName,
+} from "./lib/oci.mjs";
 import { createSelfSignedCert } from "./lib/tls.mjs";
 import {
   containerLogin,
@@ -23,11 +30,21 @@ const ce = await whichContainerEngine();
 console.log(`Using ${chalk.yellow(ce)} as container engine.`);
 console.log();
 
+let properties = await readEnvJson();
+
+const namespace = await getNamespace();
+const tenancyId = await getTenancyId();
+properties = { ...properties, ce, namespace, tenancyId };
+
 await checkDependencies();
 
 await createCerts();
 
 await loginContainerRegistry();
+
+await redisDetails();
+
+await adbDetails();
 
 await printVersions();
 
@@ -42,49 +59,91 @@ async function checkDependencies() {
 async function createCerts() {
   console.log("Generate Self signed certs...");
 
-  const shell = process.env.SHELL | "/bin/zsh";
-  $.shell = shell;
-  $.verbose = false;
-
   const certPath = "./deploy/k8s/base/ingress/.certs";
   const prevKeyExists = await fs.pathExists(path.join(certPath, "tls.key"));
   if (prevKeyExists) {
-    console.log(
-      `${chalk.yellow("Existing key pair ")} on ${certPath}. ${chalk.red(
-        "Key pair not generated"
-      )}.`
-    );
+    console.log(`${chalk.yellow("Existing key pair ")} on ${certPath}.`);
   } else {
     await createSelfSignedCert(certPath);
   }
+  properties = { ...properties, certPath };
   console.log();
 }
 
 async function loginContainerRegistry() {
   console.log("Login to container registry login...");
-  const namespace = await getNamespace();
 
-  const user = await setVariableFromEnvOrPrompt(
+  const containerRegistryUser = await setVariableFromEnvOrPrompt(
     "OCI_OCIR_USER",
     "OCI Username (usually an email)"
   );
 
-  const token = await setVariableFromEnvOrPrompt(
+  const containerRegistryToken = await setVariableFromEnvOrPrompt(
     "OCI_OCIR_TOKEN",
     "OCI Auth Token for OCI Registry"
   );
 
   const regions = await getRegions();
-  const regionName = await setVariableFromEnvOrPrompt(
+  const regionNameValue = await setVariableFromEnvOrPrompt(
     "OCI_REGION",
     "OCI Region name",
     async () => printRegionNames(regions)
   );
-  const { key } = regions.find((r) => r.name === regionName);
-  const url = `${key}.ocir.io`;
+  const { key: regionKey, name: regionName } = regions.find(
+    (r) => r.name === regionNameValue
+  );
+  const containerRegistryURL = `${regionKey}.ocir.io`;
 
-  await containerLogin(namespace, user, token, url);
+  properties = {
+    ...properties,
+    regionKey,
+    regionName,
+    containerRegistryURL,
+    containerRegistryUser,
+    containerRegistryToken,
+  };
+
+  await containerLogin(
+    namespace,
+    containerRegistryUser,
+    containerRegistryToken,
+    containerRegistryURL
+  );
   console.log();
+}
+
+async function redisDetails() {
+  const redisPassword = await generateRandomString();
+  properties = { ...properties, redisPassword };
+}
+
+async function adbDetails() {
+  const adbCompartmentName = await setVariableFromEnvOrPrompt(
+    "ADB_COMPARTMENT_NAME",
+    "Autonomous Database Compartment Name (root)"
+  );
+
+  const adbCompartmentId = await searchCompartmentIdByName(
+    adbCompartmentName || "root"
+  );
+
+  const adbName = await setVariableFromEnvOrPrompt(
+    "ADB_NAME",
+    "Autonomous Database name"
+  );
+
+  const adbPassword = await setVariableFromEnvOrPrompt(
+    "ADB_PASSWORD",
+    "Autonomous Database password"
+  );
+
+  properties = {
+    ...properties,
+    adbCompartmentId,
+    adbCompartmentName,
+    adbName,
+    adbPassword,
+  };
 }
 
 async function printRegionNames(regions) {
@@ -107,15 +166,19 @@ async function printRegionNames(regions) {
 async function printVersions() {
   await cd("./web");
   const webVersion = await getVersion();
-  console.log(`${chalk.yellow(`web\tv${webVersion}`)}`);
+  console.log(`${chalk.yellow(`web\t\tv${webVersion}`)}`);
   await cd("..");
   await cd("./server");
   const serverVersion = await getVersion();
   await cd("..");
-  console.log(`${chalk.yellow(`server\tv${serverVersion}`)}`);
+  console.log(`${chalk.yellow(`server\t\tv${serverVersion}`)}`);
   await cd("./score");
   const scoreVersion = await getVersionGradle();
   await cd("..");
-  console.log(`${chalk.yellow(`score\tv${scoreVersion}`)}`);
+  console.log(`${chalk.yellow(`score\t\tv${scoreVersion}`)}`);
+
+  properties = { ...properties, webVersion, serverVersion, scoreVersion };
   console.log();
 }
+
+await writeEnvJson(properties);

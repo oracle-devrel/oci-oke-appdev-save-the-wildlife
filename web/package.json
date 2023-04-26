@@ -1,6 +1,6 @@
 {
   "name": "web",
-  "version": "0.0.4",
+  "version": "0.0.8",
   "description": "OCI Multiplayer Web",
   "repository": "https://github.com/vmleon/oci-multiplayer",
   "license": "UNLICENSED",
@@ -26,11 +26,15 @@
     "shortid": "^2.2.16",
     "socket.io-client": "^4.4.1",
     "style-loader": "^2.0.0",
-    "three": "^0.126.0",
+    "three": "^0.127.0",
     "throttle-debounce": "^3.0.1",
     "webpack": "^5.24.2",
     "webpack-cli": "^4.5.0",
     "webpack-dev-server": "^3.11.2",
     "webpack-merge": "^5.7.3"
+  },
+  "devDependencies": {
+    "es-module-shims": "^1.7.1",
+    "threejs-editor": "^1.0.0"
   }
 }

@@ -43,8 +43,8 @@ spec:
           mountPath: /etc/redis
       volumes:
         - name: data
-          persistentVolumeClaim:
-            claimName: redis-pv-claim
+          emptyDir:
+            sizeLimit: 500Mi
         - name: config
           configMap:
             name: redis-config

@@ -19,7 +19,6 @@ fi
 banner "Build web"
 cd $BASE_DIR/web
 npm install
-npm audit fix --force
 npm run build
 
 banner "Terraform Init"

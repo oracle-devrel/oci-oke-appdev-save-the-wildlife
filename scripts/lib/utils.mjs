@@ -1,5 +1,20 @@
 #!/usr/bin/env zx
 
+export async function readEnvJson() {
+  const envFilePath = ".env.json";
+  const envFileExists = await fs.pathExists(envFilePath);
+  if (envFileExists) {
+    return fs.readJson(envFilePath);
+  }
+  return writeEnvJson({});
+}
+
+export async function writeEnvJson(properties) {
+  const envFilePath = ".env.json";
+  await fs.writeJson(envFilePath, properties, { spaces: 2 });
+  return properties;
+}
+
 // TODO move to npm.mjs
 export async function getVersion() {
   const { version } = await fs.readJson("./package.json");

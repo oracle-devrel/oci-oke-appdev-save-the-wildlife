@@ -6,21 +6,12 @@ const shell = process.env.SHELL | "/bin/zsh";
 $.shell = shell;
 $.verbose = false;
 
+const containerName = "redis_multiplayer";
+
 const ce = await whichContainerEngine();
 
 try {
-  const { stdout, stderr, exitCode } = await $`${ce} stop redis_multiplayer`;
-  if (exitCode == 0) {
-    console.log(chalk.green(stdout.trim()));
-  } else {
-    exitWithError(stderr);
-  }
-} catch (error) {
-  exitWithError(error.stderr);
-}
-
-try {
-  const { stdout, stderr, exitCode } = await $`${ce} rm redis_multiplayer`;
+  const { stdout, stderr, exitCode } = await $`${ce} stop ${containerName}`;
   if (exitCode == 0) {
     console.log(chalk.green(stdout.trim()));
   } else {

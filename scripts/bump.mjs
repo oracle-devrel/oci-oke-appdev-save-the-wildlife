@@ -1,11 +1,18 @@
 #!/usr/bin/env zx
-import { getVersion, exitWithError, validateBumpLevel } from "./lib/utils.mjs";
+import {
+  getVersion,
+  validateBumpLevel,
+  readEnvJson,
+  writeEnvJson,
+} from "./lib/utils.mjs";
 import { bump } from "./lib/npm.mjs";
 import { bumpGradle, getVersionGradle } from "./lib/gradle.mjs";
 
 const shell = process.env.SHELL | "/bin/zsh";
 $.shell = shell;
 $.verbose = false;
+
+let properties = await readEnvJson();
 
 const { _ } = argv;
 const [action] = _;
@@ -20,11 +27,6 @@ if (action === "server") {
   process.exit(0);
 }
 
-if (action === "generator") {
-  await bumpVersion("generator");
-  process.exit(0);
-}
-
 if (action === "score") {
   await bumpVersionJava("score");
   process.exit(0);
@@ -34,7 +36,6 @@ console.log("Usage:");
 console.log("\tnpx zx scripts/bump.mjs web");
 console.log("\tnpx zx scripts/bump.mjs server");
 console.log("\tnpx zx scripts/bump.mjs score");
-console.log("\tnpx zx scripts/bump.mjs generator");
 
 async function bumpVersion(service) {
   await cd(service);
@@ -49,6 +50,7 @@ async function bumpVersion(service) {
       newVersion
     )}`
   );
+  properties[`${service}Version`] = newVersion.replace("v", "");
   await cd("..");
 }
 
@@ -65,5 +67,8 @@ async function bumpVersionJava(service) {
       newVersion
     )}`
   );
+  properties[`${service}Version`] = newVersion.replace("v", "");
   await cd("..");
 }
+
+await writeEnvJson(properties);

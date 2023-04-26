@@ -4,7 +4,7 @@
 
 In this lab, we will create container images for the application components and deploy them to the Container Instances service. Container Instances are an excellent tool for running containerized applications, without the need to manage any underlying infrastructure. Just deploy and go.
 
-To help streamline the process, you'll use a custom script to create and publish container images to the OCI Container Registry. Container Registry makes it easy to store, share, and managed container images. Registries can be private (default) or public.
+To help streamline the process, you'll use a custom script to build and publish container images to the OCI Container Registry. Container Registry makes it easy to store, share, and manage container images. Registries can be private (default) or public.
 
 > **Note**: the instructions in this lab are designed around the Cloud Shell and utilize some of the built-in session variables. Should you choose to complete this outside of Cloud Shell, you will need to obtain these resource OCID's manually (through the OCI Panel or OCI CLI).
 
@@ -16,68 +16,9 @@ Estimated Lab Time: 15 minutes
 
 * An Oracle Free Tier or Paid Cloud Account
 
-## Task 1: Configure Alternative CLI Authentication
+## Task 1: Containerize the Application
 
-While OCI Cloud Shell is pre-configured to authenticate us based on logged-on user credentials, it can be quite useful to understand how easy it is to leverage alternative authenticate methods. The following is also useful when leveraging the OCI CLI outside of Cloud Shell.
-
-In this section, we will configure the CLI to an APIKey-based authentication.
-
-1. Obtain our user's OCID - click the _Profile_ icon in the top right of the cloud console, then click on your username.
-
-    ![Profile icon](images/get-user-id-01.png)
-
-2. Copy your user OCID and store it in a text file.
-
-    ![User OCID](images/get-user-id-02.png)
-
-
-3. Now, we return to our Cloud Shell instance and retrieve the tenancy OCID. Copy it somewhere for now, like a text file.
-
-    ```
-    <copy>echo $OCI_TENANCY</copy>
-    ```
-
-4. Initiate CLI configuration by running:
-
-    ```
-    <copy>oci setup config</copy>
-    ```
-
-
-    ![CLI Setup Config](images/cli-config-01.png)
-
-5. You will be prompted with a series of questions. When requested, enter your user OCID, your tenancy OCID, a profile name, and the name of the region you are using (a list will be presented for reference).
-
-    ![Setup Config 2](images/cli-config-02.png)
-
-    > **Note**: For this step, we have assigned a profile name of `workshop`. If you choose not to set a value, the value will be _`'DEFAULT'`_. The profile name is always stored in ALL CAPS and must be referenced accordingly.
-
-6. When asked whether to create a new `API Signing RSA key pair`, type 'Y' and press enter, then continue pressing enter to accept all defaults.
-
-7. Now, we can utilize OCI Cloud Shell's built-in authentication to upload the public portion of the API signing key to our user profile.
-
-    ```
-    <copy>oci iam user api-key upload --user-id <paste user OCID> --key-file ~/.oci/oci_api_key_public.pem</copy>
-    ```
-
-    ![API Key Upload](images/api-key-upload.png)
-
-8. Now, we just have to test it out, by running the following command:
-
-    ```
-    <copy>oci iam availability-domain list --auth api_key --profile WORKSHOP --config-file ~/.oci/config</copy>
-    ```
-
-    > **Note**: The profile name you entered will automatically be converted to all CAPS. Make sure to do the same when you enter the CLI command.
-
-9. You should see either 1 or 3 Availability Domains (ADs), depending on which region you're subscribed to in OCI. In this case, we have three ADs:
-
-    ![CLI Test](images/cli-test.png)
-
-
-## Task 2: Containerize the Application
-
-In this task, you will create a container image for both the server and the web pieces of the application. The container images will be stored in the OCI Container Registry for deployment to Container Instances (and eventually OKE).
+In this task, you will create a container image for both the server and  web components of the application. The container images will be stored in the OCI Container Registry for deployment to Container Instances (and eventually OKE).
 
 1. Generate an Auth Token for your Cloud user; this is required to authenticate to OCI Container Registry.
 
@@ -85,7 +26,7 @@ In this task, you will create a container image for both the server and the web 
     <copy>oci iam auth-token create --description "DevLive-Workshop" --user-id <paste user OCID> --query 'data.token' --raw-output</copy>
     ```
 
-2. Then, we copy the output string and store it somewhere safe. We will also create an environment variable to carry our auth token:
+2. Then, copy the output string and store it somewhere safe. We will also create an environment variable to carry our auth token:
 
     ```
     <copy> export OCI_OCIR_TOKEN="<auth-token-here>"</copy>
@@ -93,13 +34,15 @@ In this task, you will create a container image for both the server and the web 
 
     > **Note**: remove the `<>` when pasting your auth token.
 
-3. We will also create an environment variable to hold our email address: 
+3. We will also create an environment variable to hold our user ID: 
 
     ```
-    <copy>export OCI_OCIR_USER=<OCI_email_or_IAM_user_id></copy>
+    <copy>export OCI_OCIR_USER=<OCI_IDCS_user_or_IAM_user_id></copy>
     ```
 
     ![Export variables](images/ocir-variables.png)
+
+    > **Note**: when using a federated user (most common) you will need to include `oracleidentitycloudservice/` before your email address.
 
 4. Making sure that we're in the right directory (`devlive-save-the-wildlife`) before we do anything else, let's execute:
 
@@ -140,7 +83,7 @@ In this task, you will create a container image for both the server and the web 
 9. Finally, we repeat step 7 and copy the `Released:` path and save it in a text document for now.
 
 
-## Task 3: Deploy to Container Instances
+## Task 2: Deploy to Container Instances
 
 Now that both images have been created and published, we just need to grab just a few more pieces of information and launch the Container Instances resource.
 
@@ -194,7 +137,7 @@ Now that both images have been created and published, we just need to grab just 
 
     And remember to copy the newly generated base64-formatted values to a text file.
 
-    > **Note**: if the **base64** output produces a new line or a carriage return character after the username, simply paste the output into a text file and strip it from these special characters.
+    > **Note**: if the **base64** output produces a new line or a carriage return character after the username, simply paste the output into a text file and remove the new line / carriage return.
 
 5. Copy the following command to a text file, modify the <placeholder> values, then paste the full, edited command into your Cloud Shell instance:
 
@@ -204,8 +147,7 @@ Now that both images have been created and published, we just need to grab just 
     --containers ['{"displayName":"ServerContainer","imageUrl":"<release path for server image>","resourceConfig":{"memoryLimitInGBs":8,"vcpusLimit":1.5}},{"displayName":"WebContainer","imageUrl":"<release path for Web image>","resourceConfig":{"memoryLimitInGBs":8,"vcpusLimit":1.5}}'] \
     --shape CI.Standard.E4.Flex --shape-config '{"memoryInGBs":16,"ocpus":4}' \
     --vnics ['{"displayName": "ocimultiplayer","subnetId":"<subnet OCID>"}'] \
-    --image-pull-secrets ['{"password":"<base-64-encoded-auth-token>","registryEndpoint":"<OCIR endpoint>","secretType":"BASIC","username":"<base-64-encoded-username>"}'] \
-    --config-file ~/.oci/config --profile WORKSHOP --auth api_key</copy>
+    --image-pull-secrets ['{"password":"<base-64-encoded-auth-token>","registryEndpoint":"<OCIR endpoint>","secretType":"BASIC","username":"<base-64-encoded-username>"}']</copy>
     ```
 
    The command will look something like this (notice we created variables for a few of the parameter values - totally optional):
@@ -292,4 +234,4 @@ In this fourth and final task, we need to add the Container Instance private IP 
 * **Author** - Victor Martin - Technology Product Strategy Director - EMEA
 * **Author** - Wojciech (Vojtech) Pluta - Developer Relations - Immersive Technology Lead
 * **Author** - Eli Schilling - Developer Advocate - Cloud Native and DevOps
-* **Last Updated By/Date** - March 21st, 2023
+* **Last Updated By/Date** - May, 2023

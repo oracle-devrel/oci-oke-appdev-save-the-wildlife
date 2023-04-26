@@ -84,6 +84,9 @@ export async function searchCompartmentIdByName(compartmentName) {
   if (!compartmentName) {
     exitWithError("Compartment name required");
   }
+  if (compartmentName === "root") {
+    return getTenancyId();
+  }
   try {
     const { stdout, exitCode, stderr } =
       await $`oci iam compartment list --compartment-id-in-subtree true --name ${compartmentName} --query "data[].id"`;
@@ -98,4 +101,52 @@ export async function searchCompartmentIdByName(compartmentName) {
   } catch (error) {
     exitWithError(error.stderr);
   }
+}
+
+export async function uploadApiKeyFile(userId, publicKeyPath) {
+  if (!userId) {
+    exitWithError("User ID required");
+  }
+  if (!publicKeyPath) {
+    exitWithError("Public RSA key required");
+  }
+  const rsaPublicKeyExists = await fs.pathExists(publicKeyPath);
+  if (!rsaPublicKeyExists) {
+    exitWithError(`RSA Public key ${publicKeyPath} does not exists`);
+  }
+  try {
+    const { stdout, exitCode, stderr } =
+      await $`oci iam user api-key upload --user-id ${userId} --key-file ${publicKeyPath}`;
+    if (exitCode !== 0) {
+      exitWithError(stderr);
+    }
+    if (!stdout.length) {
+      exitWithError("Compartment name not found");
+    }
+    const { fingerprint } = JSON.parse(stdout.trim()).data;
+    return fingerprint;
+  } catch (error) {
+    exitWithError(error.stderr);
+  }
+}
+
+export async function getUserId() {
+  const userIdEnv = process.env.OCI_CS_USER_OCID;
+  if (userIdEnv) {
+    return userIdEnv;
+  }
+  const userEmail = await question("OCI User email: ");
+  const { stdout, exitCode, stderr } = await $`oci iam user list --all`;
+  if (exitCode !== 0) {
+    exitWithError(stderr);
+  }
+  if (!stdout.length) {
+    exitWithError("User name not found");
+  }
+  const data = JSON.parse(stdout.trim()).data;
+  const userFound = data.find((user) => user.email === userEmail);
+  if (!userFound) {
+    exitWithError(`User ${userEmail} not found`);
+  }
+  return userFound.id;
 }
