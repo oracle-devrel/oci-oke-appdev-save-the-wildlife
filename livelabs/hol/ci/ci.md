@@ -177,7 +177,7 @@ Now that both images have been created and published, we just need to grab just 
 
     ![CI Private IP](images/ContainerInstance-privateIp.png)
 
-## Task 4: Modify the Load Balancer
+## Task 3: Modify the Load Balancer
 
 In this fourth and final task, we need to add the Container Instance private IP address to the *backend set* of our Load Balancer (which was deployed as part of the first lab).
 
