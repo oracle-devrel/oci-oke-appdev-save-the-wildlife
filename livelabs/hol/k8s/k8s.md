@@ -1,6 +1,6 @@
-# Advanced content (optional)
+# Enhance the application architecture
 
-## Enhance the application architecture
+## Introduction
 In this lab we will enhance our application in an effort to continue moving towards a more cloud native design. For this, an autonomous database will be deployed, new application components will be added, and the the entire solution wll be deployed to Oracle Container Engine for Kubernetes (OKE).
 
 
