@@ -2,15 +2,15 @@
 
 ## Introduction - The power of Cloud Native on Oracle Cloud
 
-![save the wildlife logo](images/logoPlusOCI.png)
+![save the wildlife logo](images/stwl.png)
 
-![save the wildlife game visualized](images/stwl.gif)
+<!-- ![save the wildlife game visualized](images/stwl.gif) -->
 
-Thank you for choosing **DevLive-Save-the-Wildlife**! This workshop is a valuable opportunity to enhance your cloud computing skills and learn how to build and deploy multiplayer applications in the cloud. With Cloud Native on Oracle Cloud, you'll discover the power of deploying a _`Three.js`_ application to the cloud, modernizing it, and enhancing it with immersive experiences for Metaverse and Gaming.  
+This workshop is a valuable opportunity to enhance your cloud computing skills and learn how to build and deploy multiplayer applications in the cloud. With Cloud Native on Oracle Cloud, you'll discover the power of deploying a _`Three.js`_ application to the cloud, modernizing it, and enhancing it with immersive experiences for Metaverse and Gaming.  
 
 _`Three.js`_ is a popular JavaScript library for creating 3D graphics and animations in web browsers, and there are other options available, such as _`Babylon.js`_ and _`A-Frame`_. The principles of 3D graphics and animation are transferable between these libraries, and the backend and concurrency management principles that are essential for Metaverse applications are also applicable across all three libraries. Part 1 of this workshop will focus on _`Three.js`_, but we will cover other options in the future.
 
-With _`Three.js`_ and Cloud Native on Oracle Cloud, you can create engaging Metaverse applications for your customers, employees, and partners. Whether it's virtual showrooms, immersive training simulations, product demonstrations, or games, _`Three.js`_ and Cloud Native on Oracle Cloud provide the scalability, performance, and availability you need to succeed in the Metaverse.
+With _`Three.js`_ and Cloud Native on Oracle Cloud, you can create engaging Metaverse applications for your customers, employees, and partners. Whether it's virtual showrooms, immersive training simulations, product demonstrations, or games, _`Three.js`_ and Cloud Native on Oracle Cloud provide the scalability, performance, and availability you need to deliver immersive experiences.
 
 Estimated Lab Time: 60 minutes
 
