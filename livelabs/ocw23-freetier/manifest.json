@@ -1,11 +1,11 @@
 {
-  "workshoptitle": "OCI Multiplayer Workshop",
-  "help": "livelabs-help-db_us@oracle.com",
+  "workshoptitle": "Save the Wildlife - Monolith to Microservice - Game App Modernization",
+  "help": "eli.schilling@oracle.com,wojciech.pluta@oracle.com",
   "tutorials": [
     {
       "title": "Introduction",
       "description": "What the workshop is about",
-      "filename": "../../hol/intro/intro.md"
+      "filename": "../ocw23-livelabs/intro/intro.md"
     },
     {
       "title": "Get Started",
