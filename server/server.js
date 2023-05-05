@@ -34,8 +34,8 @@ const ITEM_MIN_SIZE = process.env.ITEM_MIN_SIZE
 const WORLD_SIZE_X = process.env.WORLD_SIZE_X
   ? parseInt(process.env.WORLD_SIZE_X)
   : 88;
-const WORLD_SIZE_Y = process.env.WORLD_SIZE_Y
-  ? parseInt(process.env.WORLD_SIZE_Y)
+const WORLD_SIZE_Z = process.env.WORLD_SIZE_Z
+  ? parseInt(process.env.WORLD_SIZE_Z)
   : 22;
 
 const GAME_DURATION_IN_SECONDS = process.env.GAME_DURATION_IN_SECONDS
@@ -72,6 +72,8 @@ export async function start(
     socket.emit("server.info", {
       id: serverId,
       gameDuration: GAME_DURATION_IN_SECONDS,
+      worldSizeX: WORLD_SIZE_X,
+      worldSizeZ: WORLD_SIZE_Z
     });
 
     const trashFromCache = await readCacheEntries(mapTrash);
@@ -181,9 +183,9 @@ export async function start(
   }, BROADCAST_ITEMS_IN_SECONDS * 1000);
 
   function createObject(type) {
-    const x = Math.round((Math.random() - 0.5) * WORLD_SIZE_X);
-    const y = Math.round((Math.random() - 0.5) * WORLD_SIZE_Y);
-    const z = 0;
+    const x = Math.round((Math.random() - 0.5) * (WORLD_SIZE_X - 1));
+    const y = 0;
+    const z = Math.round((Math.random() - 0.5) * (WORLD_SIZE_Z -1));
     const size = (
       Math.random() * (ITEM_MAX_SIZE - ITEM_MIN_SIZE) +
       ITEM_MIN_SIZE
