@@ -1,3 +1,29 @@
 // see https://github.com/oracle-devrel/action-release-zip-maker for docs
 [
+    {
+        "action": "create_zip",
+        "file_name": "oci-oke-save-the-wildlife-latest.zip",
+        "files": [
+          {
+            "src": "LICENSE"
+          },
+          {
+            "src": "score",
+            "dst": "score"
+          },
+          {
+            "src": "web",
+            "dst": "web"
+          },
+          {
+            "src": "server",
+            "dst": "server"
+          }
+        ]
+    },
+    {
+        "action": "upload_file",
+        "file_name": "oci-oke-save-the-wildlife-latest.zip"
+    }
+    
 ]
