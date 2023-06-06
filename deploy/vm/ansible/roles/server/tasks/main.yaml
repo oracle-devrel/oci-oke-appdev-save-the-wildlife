@@ -3,6 +3,11 @@
   dnf:
     name: "@nodejs:18"
     update_cache: yes
+- name: Install Podman
+  dnf:
+    name: 
+      - "podman"
+    update_cache: yes
 - name: Copy server files
   copy:
     src: ../../../../../server/
@@ -33,3 +38,5 @@
   become_user: opc
   args:
     chdir: /home/opc/server/
+- name: Run coherence
+  command: podman run -d -p 1408:1408 ghcr.io/oracle/coherence-ce:23.03
