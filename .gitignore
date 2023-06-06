@@ -59,12 +59,16 @@ logs
 
 *.retry
 
+*.pem
 *.key
 *.crt
 *.conf
 
+appendonlydir/
+
 .env_server
 .env
+.env.json
 
 HELP.md
 .gradle
@@ -108,3 +112,5 @@ out/
 
 ### VS Code ###
 .vscode/
+*.dtmp
+*.bkp

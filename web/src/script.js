@@ -39,6 +39,8 @@ let turtleModel;
 let gameOverFlag = false;
 let camera;
 let textureEquirec, sphereMaterial;
+let sounds;
+let speedElement;
 
 let scoreFromBackend;
 let localScore = 0;
@@ -65,7 +67,7 @@ async function init() {
     textureLoader.load("assets/envmap.png", (texture) => {
       texture.mapping = THREE.EquirectangularReflectionMapping;
       texture.encoding = THREE.sRGBEncoding;
-      console.log("Texture loaded:", texture);
+      // console.log("Texture loaded:", texture);
       resolve(texture);
     });
   });
@@ -93,6 +95,11 @@ async function init() {
     new THREE.MeshPhongMaterial({ color: 0xff0000 }), // Red material for trash
   ];
 
+  //add music loader
+  const audioLoader = new THREE.AudioLoader();
+  const sounds = await audioLoader.loadAsync("assets/mixkit-motorboat-on-the-sea-1183.m4v");
+  // console.log("Sound loaded: ", sounds);
+
   // Comms
   const hostname = window.location.hostname;
   const isDevelopment = hostname === "localhost";
@@ -107,7 +114,7 @@ async function init() {
   worker.onmessage = ({ data }) => {
     const { type, body, error } = data;
     if (error) {
-      console.error(error);
+      // console.error(error);
       Object.keys(otherPlayersMeshes).forEach((id) =>
         scene.remove(otherPlayersMeshes[id])
       );
@@ -116,29 +123,29 @@ async function init() {
     }
     switch (type) {
       case "connect":
-        console.log("Web Socket connection");
+        // console.log("Web Socket connection");
         break;
       case "disconnect":
-        console.log("Web Socket disconnection");
+        // console.log("Web Socket disconnection");
         break;
       case "log":
         console.log(body);
         break;
       case "server.info":
-        console.log(`Connected to server ${body.id}`);
-        console.log(`Game duration ${body.gameDuration} seconds`);
+        // console.log(`Connected to server ${body.id}`);
+        // console.log(`Game duration ${body.gameDuration} seconds`);
         gameDuration = body.gameDuration;
         // console.log(`World X: ${body.worldSizeX} World Z: ${body.worldSizeZ}`);
         boundaries.width = body.worldSizeX;
         boundaries.height = body.worldSizeZ;
-        console.log(`Updated boundaries: width: ${boundaries.width}, height: ${boundaries.height}`);
+        // console.log(`Updated boundaries: width: ${boundaries.width}, height: ${boundaries.height}`);
         break;
       case "game.on":
         worker.postMessage({
           type: "game.start",
           body: { playerId: yourId, playerName },
         });
-        startGame(gameDuration, [boatModel, turtleModel]);
+        startGame(gameDuration, [boatModel, turtleModel],sounds);
         break;
       case "game.end":
         endGame();
@@ -200,7 +207,7 @@ async function init() {
         break;
       case "player.info.all":
         // FIXME update player info
-        console.log("player.info.all", body);
+        // console.log("player.info.all", body);
         // otherPlayers
         break;
       default:
@@ -210,7 +217,7 @@ async function init() {
 
   // FIXME Disconnect properly when kill tab, reload, etc
   window.addEventListener("beforeunload", function (e) {
-    console.log("beforeunload");
+    // console.log("beforeunload");
   });
 
   function makePlayerMesh(playerMesh, scene) {
@@ -252,6 +259,7 @@ async function init() {
     const material = isMarineLife(itemType) ? materials[0] : materials[1];
     const itemMesh = new THREE.Mesh(geometry, material);
     itemMesh.position.set(position.x, position.y, position.z);
+    // console.log(position);
     itemMesh.scale.set(size, size, size);
     itemMesh.itemId = itemId;
     itemMesh.itemType = itemType;
@@ -280,7 +288,7 @@ async function init() {
 }
 
 // FIXME models passed as array?
-function startGame(gameDuration, [boat, turtle]) {
+function startGame(gameDuration, [boat, turtle],sounds) {
   scene.environment = textureEquirec;
 
   const backgroundGeometry = new THREE.SphereBufferGeometry(100000, 100000, 24);
@@ -289,16 +297,7 @@ function startGame(gameDuration, [boat, turtle]) {
   scene.add(backgroundMesh);
   // backgroundMesh.position.set(0,0,0);
 
-  // const audioLoader = new THREE.AudioListener();
-  // audioLoader.load( '/assets/mixkit-motorboat-on-the-sea-1183.wav', function( buffer ) {
-  //   sound.setBuffer( buffer );
-  //   sound.setLoop( true );
-  //   sound.setVolume( 0.5 );
-  //   sound.play();
-  // });
-
-  const listener = new THREE.AudioListener();
-
+// console.log("Input sound: ", sounds);
 
   const playerMaterial = new THREE.MeshStandardMaterial({
     color: 0xa52a2a,
@@ -321,9 +320,16 @@ function startGame(gameDuration, [boat, turtle]) {
     0.1,
     1000
   );
-  camera.add(listener);
 
+//adding background music
+const listener = new THREE.AudioListener();
+camera.add(listener);
 
+const sound =new THREE.Audio(listener);
+sound.setBuffer(sounds);
+sound.setVolume(0.09);
+sound.play();
+sound.setLoop(true); 
 
   renderer = new THREE.WebGLRenderer({
     canvas: canvas,
@@ -346,7 +352,6 @@ function startGame(gameDuration, [boat, turtle]) {
     camera.updateProjectionMatrix();
   });
 
-  camera.add( listener );
   scene.add( camera );
 
   const waterGeometry = new THREE.PlaneGeometry(
@@ -383,7 +388,7 @@ function startGame(gameDuration, [boat, turtle]) {
     color: 0x0000ff, 
     opacity: 0.1,
     transparent: true,
-    wireframe: true,
+    wireframe: false,
   });
   const navmesh = new THREE.Mesh(navmeshGeometry, navmeshMaterial);
 
@@ -406,6 +411,16 @@ function startGame(gameDuration, [boat, turtle]) {
   timerDiv.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
   timerDiv.innerHTML = "Time: " + remainingTime;
   document.body.appendChild(timerDiv);
+
+  speedElement = document.createElement("div");
+  speedElement.style.position="absolute";
+  speedElement.style.top="65px"
+  speedElement.style.left = "10px";
+  speedElement.style.color = "white";
+  speedElement.style.fontSize = "13px";
+  speedElement.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+  speedElement.innerHTML = "Speed: ";
+  document.body.appendChild(speedElement);
 
   function updateTimer() {
     if (remainingTime > 0) {
@@ -455,9 +470,9 @@ function startGame(gameDuration, [boat, turtle]) {
     for (const [key, mesh] of Object.entries(itemMeshes)) {
       if (!mesh.outOfBounds) {
         const sinValue = Math.sin(
-          time * 2 + mesh.position.x * 0.5 + mesh.position.y * 0.3
+          time * 2 + mesh.position.x * 0.5 + mesh.position.z * 0.3
         );
-        mesh.position.z = sinValue * floatAmplitude;
+        mesh.position.y = sinValue * floatAmplitude;
       }
     }
   }
@@ -470,7 +485,7 @@ const sunIntensity = 8;
 const directionalLight = new THREE.DirectionalLight(skyColor, sunIntensity);
 directionalLight.position.set(1, 1, -1); 
 scene.add(directionalLight);
-const aboveWaterFogDensity = 0.001;
+const aboveWaterFogDensity = 0.01;
 scene.fog = new THREE.FogExp2(skyColor, aboveWaterFogDensity);
 
 document.addEventListener("keydown", function (event) {
@@ -513,30 +528,61 @@ document.addEventListener("keydown", function (event) {
     }
   }
 
+let speedLimitation = performance.now();
+
   function updatePlayerPosition() {
     if (!player || !water || gameOverFlag) {
       return;
     }
-    const ACCELERATION = 0.005;
-    const BRAKE = 0.1;
+    const ACCELERATION = 1;
+    const BRAKE = 0.0005;
     const MAX_SPEED = 0.05;
-    const TURN_SPEED = Math.PI / 180;
+    const FRICTION = 0.003;
+    const TURN_SPEED = Math.PI / 360;
+    const DRIFT_FACTOR = 0.02
+    
+    let currentTime = performance.now();
     let movement = new THREE.Vector3(0, 0, 0);
+    let lateralVelocity = new THREE.Vector3(0,0,0);
+    let deltaTime = (currentTime - speedLimitation)/10000;
+    
+    speedLimitation = currentTime;
+
+    // console.log("Speed Limitation: ", speedLimitation);
+    // console.log("Current time: ", currentTime);
+    // console.log("Delta time: ", deltaTime);
+
+    
     if (keyboard["ArrowUp"]) {
-      playerSpeed += ACCELERATION;
+      playerSpeed += ACCELERATION * deltaTime;
     } else if (keyboard["ArrowDown"]) {
       playerSpeed -= BRAKE;
-    } else {
-      playerSpeed *= 0.98; 
     }
-    playerSpeed = Math.max(Math.min(playerSpeed, MAX_SPEED), -MAX_SPEED);
 
     if (keyboard["ArrowLeft"]) {
       player.rotation.y += TURN_SPEED;
-    }
-    if (keyboard["ArrowRight"]) {
+      if (keyboard["ArrowUp"]) {
+          playerSpeed *= (1 - FRICTION);
+          lateralVelocity.x += DRIFT_FACTOR;
+      }
+  }
+  if (keyboard["ArrowRight"]) {
       player.rotation.y -= TURN_SPEED;
-    }
+      if (keyboard["ArrowUp"]) {
+          playerSpeed *= (1 - FRICTION); 
+          lateralVelocity.x -= DRIFT_FACTOR;
+      }
+  }
+  
+  if (!keyboard["ArrowUp"] && !keyboard["ArrowDown"]) {
+    playerSpeed *= (1 - FRICTION)
+  }
+
+  player.position.x += lateralVelocity.x;
+  lateralVelocity.x *=(1-FRICTION);
+
+  playerSpeed = Math.max(Math.min(playerSpeed, MAX_SPEED), -MAX_SPEED);
+    speedElement.innerHTML = `Speed: ${playerSpeed.toFixed(2)*100}`;
 
     const direction = new THREE.Vector3(0, 0, 1).applyQuaternion(
       player.quaternion
