@@ -153,6 +153,7 @@ zx scripts/start_coherence.mjs
 cd server
 npm install
 npm start
+cd server && npm install && npm start
 ```
 
 Client on its own terminal:

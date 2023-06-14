@@ -4,6 +4,7 @@ import { MathUtils } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 import { MMDLoader } from "three/examples/jsm/loaders/MMDLoader.js";
+import { Water } from "three/examples/jsm/objects/Water.js";
 import { throttle } from "throttle-debounce";
 import "./style.css";
 import * as lobby from "./lobby";
@@ -41,7 +42,7 @@ let camera;
 let textureEquirec, sphereMaterial;
 let sounds;
 let speedElement;
-
+let waterShader;
 let scoreFromBackend;
 let localScore = 0;
 let timerId;
@@ -336,13 +337,13 @@ sound.setLoop(true);
     antialias: true,
   });
   renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
-
   renderer.physicallyCorrectLights = true;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+  document.body.appendChild(renderer.domElement);
 
   window.addEventListener("resize", function () {
     var width = window.innerWidth;
@@ -369,6 +370,27 @@ sound.setLoop(true);
   const water = new THREE.Mesh(waterGeometry, waterMaterial);
   scene.add(water);
 
+
+  waterShader = new Water(
+    waterGeometry,
+    {
+      textureWidth: 155,
+      textureHeight: 250,
+      waterNormals: new THREE.TextureLoader().load( 'assets/waternormals.jpg', function ( texture ) {
+
+        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+
+      } ),
+      // sunDirection: new THREE.Vector3(),
+      // sunColor: 0xffffff,
+      waterColor: 0x001e0f,
+      distortionScale: 4.7,
+      fog: scene.fog !== undefined
+    }
+  );
+
+  scene.add( waterShader );
+
   sendYourPosition = throttle(traceRateInMillis, false, () => {
     if (gameOverFlag) return;
     // FIXME don't send trace if no changes
@@ -383,10 +405,10 @@ sound.setLoop(true);
     worker.postMessage({ type: "player.trace.change", body: trace });
   });
 
-  const navmeshGeometry = new THREE.PlaneGeometry(89, 23);
+  const navmeshGeometry = new THREE.PlaneGeometry(160, 255);
   const navmeshMaterial = new THREE.MeshBasicMaterial({
     color: 0x0000ff, 
-    opacity: 0.1,
+    opacity: 0,
     transparent: true,
     wireframe: false,
   });
@@ -480,13 +502,17 @@ sound.setLoop(true);
 const ambientLight = new THREE.AmbientLight(0x404040, 7); 
 scene.add(ambientLight);
 
-const skyColor = 0xaaccff; 
+var light = new THREE.PointLight(0xffffff, 1, 1);
+light.position.set(0, 1, 0);
+player.add(light);
+
+const skyColor = 0xffffff; 
 const sunIntensity = 8; 
 const directionalLight = new THREE.DirectionalLight(skyColor, sunIntensity);
-directionalLight.position.set(1, 1, -1); 
+// directionalLight.position.set(0, 10, 0); 
 scene.add(directionalLight);
-const aboveWaterFogDensity = 0.01;
-scene.fog = new THREE.FogExp2(skyColor, aboveWaterFogDensity);
+// const aboveWaterFogDensity = 0.01;
+// scene.fog = new THREE.FogExp2(skyColor, aboveWaterFogDensity);
 
 document.addEventListener("keydown", function (event) {
     keyboard[event.code] = true;
@@ -624,7 +650,7 @@ let speedLimitation = performance.now();
     requestAnimationFrame(animate);
     updatePlayerPosition();
     checkCollisions();
-    renderer.render(scene, camera);
+    render();
     animateItems();
     // traces
     sendYourPosition();
@@ -637,9 +663,15 @@ let speedLimitation = performance.now();
   }
   animate();
 
-  var light = new THREE.PointLight(0xffffff, 1, 1);
-  light.position.set(0, 1, 0);
-  player.add(light);
+  function render() {
+
+    const time = performance.now() * 0.01;
+
+    waterShader.material.uniforms[ 'time' ].value += 1.0 / 6000.0;
+
+    renderer.render( scene, camera );
+
+  }
 }
 
 function isMarineLife(type) {
