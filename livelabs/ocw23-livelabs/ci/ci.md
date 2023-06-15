@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In this lab, we will create container images for the application components and deploy them to the Container Instances service. Container Instances are an excellent tool for running containerized applications, without the need to manage any underlying infrastructure. Just deploy and go.
+In this lab, we will create container images for the application components and deploy them to the [Container Instances](https://docs.oracle.com/en-us/iaas/Content/container-instances/home.htm) service. Container Instances are an excellent tool for running containerized applications, without the need to manage any underlying infrastructure. Just deploy and go.
 
 To help streamline the process, you'll use a custom script to build and publish container images to the OCI Container Registry. Container Registry makes it easy to store, share, and manage container images. Registries can be private (default) or public.
 
@@ -23,7 +23,7 @@ In this task, you will create a container image for both the server and  web com
 1. Generate an Auth Token for your Cloud user; this is required to authenticate to OCI Container Registry.
 
     ```
-    <copy>oci iam auth-token create --description "DevLive-Workshop" --user-id <paste user OCID> --query 'data.token' --raw-output</copy>
+    <copy>oci iam auth-token create --description "OCW-Workshop" --user-id <paste user OCID> --query 'data.token' --raw-output</copy>
     ```
 
 2. Then, copy the output string and store it somewhere safe. We will also create an environment variable to carry our auth token:
@@ -42,7 +42,7 @@ In this task, you will create a container image for both the server and  web com
 
     ![Export variables](images/ocir-variables.png)
 
-    > **Note**: when using a federated user (most common) you will need to include `oracleidentitycloudservice/` before your email address.
+    > **Note**: when using a [federated user](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/usingscim.htm) (most common) you will need to include `oracleidentitycloudservice/` before your email address.
 
 4. Making sure that we're in the right directory (`devlive-save-the-wildlife`) before we do anything else, let's execute:
 
@@ -113,7 +113,7 @@ Now that both images have been created and published, we just need to grab just 
 
 4. Finally - you'll need to convert your OCIR username and auth token/password to _base64_ format, as required by the CLI. For that, depending on your account's authentication status (federated user or IAM user), here are the commands required to achieve this conversion: 
 
-    - For federated users (you'll most likely be in this group):
+    - For [federated users](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/usingscim.htm) (you'll most likely be in this group):
 
         ```
         <copy>

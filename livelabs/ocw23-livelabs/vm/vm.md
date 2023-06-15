@@ -120,7 +120,7 @@ Estimated Lab Time: 15 minutes
 
     ![Ansible configuration](images/script-03.png)
 
-5. And there you have it! Copy the _`lb_public_ip`_ value (corresponding to the Load Balancer), open a new browser tab, and check it out.
+5. And there you have it! Copy the _`lb_public_ip`_ value (corresponding to the Load Balancer), open a new browser tab, and check your multiplayer game by pasting your public ip address.
 
     ![Script complete](images/script-04.png)
 

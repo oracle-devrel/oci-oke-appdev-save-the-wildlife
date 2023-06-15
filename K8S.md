@@ -150,6 +150,7 @@ Server on its own terminal:
 export REDIS_PASSWORD=fk3ampeHq
 zx scripts/start_redis.mjs
 zx scripts/start_coherence.mjs
+zx scripts/start_redis.mjs && zx scripts/start_coherence.mjs
 cd server
 npm install
 npm start
@@ -173,5 +174,5 @@ To clean up after
 
 ```bash
 zx scripts/stop_redis.mjs
-zx scripts/stop_coherence.mjs
+zx scripts/stop_redis.mjs && zx scripts/stop_coherence.mjs
 ```

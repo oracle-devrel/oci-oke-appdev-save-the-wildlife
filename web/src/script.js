@@ -5,6 +5,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 import { MMDLoader } from "three/examples/jsm/loaders/MMDLoader.js";
 import { Water } from "three/examples/jsm/objects/Water.js";
+import { Sky } from "three/examples/jsm/objects/Sky.js";
 import { throttle } from "throttle-debounce";
 import "./style.css";
 import * as lobby from "./lobby";
@@ -298,6 +299,22 @@ function startGame(gameDuration, [boat, turtle],sounds) {
   scene.add(backgroundMesh);
   // backgroundMesh.position.set(0,0,0);
 
+  const sky = new Sky();
+  sky.scale.setScalar( 10000 );
+  scene.add( sky );
+
+  const skyUniforms = sky.material.uniforms;
+
+  skyUniforms[ 'turbidity' ].value = 10;
+  skyUniforms[ 'rayleigh' ].value = 2;
+  skyUniforms[ 'mieCoefficient' ].value = 0.005;
+  skyUniforms[ 'mieDirectionalG' ].value = 0.8;
+
+  const parameters = {
+    elevation: 2,
+    azimuth: 180
+  };
+  
 // console.log("Input sound: ", sounds);
 
   const playerMaterial = new THREE.MeshStandardMaterial({
@@ -381,8 +398,8 @@ sound.setLoop(true);
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 
       } ),
-      // sunDirection: new THREE.Vector3(),
-      // sunColor: 0xffffff,
+      sunDirection: new THREE.Vector3(),
+      sunColor: 0xffffff,
       waterColor: 0x001e0f,
       distortionScale: 4.7,
       fog: scene.fog !== undefined
@@ -499,12 +516,12 @@ sound.setLoop(true);
     }
   }
 
-const ambientLight = new THREE.AmbientLight(0x404040, 7); 
-scene.add(ambientLight);
+// const ambientLight = new THREE.AmbientLight(0x404040, 7); 
+// scene.add(ambientLight);
 
-var light = new THREE.PointLight(0xffffff, 1, 1);
-light.position.set(0, 1, 0);
-player.add(light);
+// var light = new THREE.PointLight(0xffffff, 1, 1);
+// light.position.set(0, 1, 0);
+// player.add(light);
 
 const skyColor = 0xffffff; 
 const sunIntensity = 8; 
