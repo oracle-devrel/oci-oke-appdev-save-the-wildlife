@@ -3,7 +3,6 @@ import * as THREE from "three";
 import { MathUtils } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
-import { MMDLoader } from "three/examples/jsm/loaders/MMDLoader.js";
 import { Water } from "three/examples/jsm/objects/Water.js";
 import { Sky } from "three/examples/jsm/objects/Sky.js";
 import { throttle } from "throttle-debounce";
@@ -67,8 +66,7 @@ async function init() {
   const textureLoader = new THREE.TextureLoader();
   const textureEquirec = await new Promise((resolve) => {
     textureLoader.load("assets/envmap.png", (texture) => {
-      texture.mapping = THREE.EquirectangularReflectionMapping;
-      texture.encoding = THREE.sRGBEncoding;
+      // texture.mapping = THREE.EquirectangularReflectionMapping;
       // console.log("Texture loaded:", texture);
       resolve(texture);
     });
@@ -76,8 +74,7 @@ async function init() {
 
   // Set up the scene
 
-  scene.background = textureEquirec;
-  scene.environment = textureEquirec;
+
 
   // Load the GLTF models
   const loader = new GLTFLoader();
@@ -93,8 +90,8 @@ async function init() {
   ];
 
   const materials = [
-    new THREE.MeshPhongMaterial({ color: 0x00ff00 }), // Green material for wildlife
-    new THREE.MeshPhongMaterial({ color: 0xff0000 }), // Red material for trash
+    new THREE.MeshPhongMaterial({ color: 0x000000 }), // Green material for wildlife
+    new THREE.MeshPhongMaterial({ color: 0xFFFFFF }), // Red material for trash
   ];
 
   //add music loader
@@ -290,32 +287,68 @@ async function init() {
 }
 
 // FIXME models passed as array?
-function startGame(gameDuration, [boat, turtle],sounds) {
-  scene.environment = textureEquirec;
+function startGame(gameDuration, [boat, turtle],sounds, textureEquirec) {
 
-  const backgroundGeometry = new THREE.SphereBufferGeometry(100000, 100000, 24);
+  //renders
+  renderer = new THREE.WebGLRenderer({
+    canvas: canvas,
+    antialias: true,
+  });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 0.2;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  document.body.appendChild(renderer.domElement);
+
+
+  const backgroundGeometry = new THREE.SphereGeometry(100000, 100000, 24);
   const backgroundMaterial = new THREE.MeshBasicMaterial({ map: textureEquirec });
   const backgroundMesh = new THREE.Mesh(backgroundGeometry, backgroundMaterial);
   scene.add(backgroundMesh);
-  // backgroundMesh.position.set(0,0,0);
+  backgroundMesh.position.set(0,0,0);
+  scene.background = textureEquirec;
+  scene.environment = textureEquirec;
 
-  const sky = new Sky();
-  sky.scale.setScalar( 10000 );
-  scene.add( sky );
 
-  const skyUniforms = sky.material.uniforms;
+  //scene lights 
+  const ambientLight = new THREE.AmbientLight(0x404040, 7); 
+  scene.add(ambientLight);
+  
+  //player light
+  // var light = new THREE.PointLight(0xffffff, 1, 1);
+  // light.position.set(0, 1, 0);
+  // player.add(light);
+  
+  //environment light
+  const skyColor = 0xffffff; 
+  const sunIntensity = 20; 
+  const directionalLight = new THREE.DirectionalLight(skyColor, sunIntensity);
+  directionalLight.position.set(0, 10, 0); 
+  scene.add(directionalLight);
+  
+  // const sky = new Sky();
+  // sky.scale.setScalar( 10000 );
+  // scene.add( sky );
 
-  skyUniforms[ 'turbidity' ].value = 10;
-  skyUniforms[ 'rayleigh' ].value = 2;
-  skyUniforms[ 'mieCoefficient' ].value = 0.005;
-  skyUniforms[ 'mieDirectionalG' ].value = 0.8;
+  // const skyUniforms = sky.material.uniforms;
 
-  const parameters = {
-    elevation: 2,
-    azimuth: 180
-  };
+  // skyUniforms[ 'turbidity' ].value = 10;
+  // skyUniforms[ 'rayleigh' ].value = 2;
+  // skyUniforms[ 'mieCoefficient' ].value = 0.005;
+  // skyUniforms[ 'mieDirectionalG' ].value = 0.8;
+
+  // const parameters = {
+  //   elevation: 2,
+  //   azimuth: 180
+  // };
   
 // console.log("Input sound: ", sounds);
+
+  
+  //fog
+  const aboveWaterFogDensity = 0.01;
+  scene.fog = new THREE.FogExp2(skyColor, aboveWaterFogDensity);
 
   const playerMaterial = new THREE.MeshStandardMaterial({
     color: 0xa52a2a,
@@ -323,6 +356,7 @@ function startGame(gameDuration, [boat, turtle],sounds) {
     metalness: 0.1,
   });
 
+  //boat spawn
   boat.position.set(0, 0, 0);
   boat.scale.set(1, 1, 1);
   boat.rotation.set(0, 0, 0);
@@ -339,7 +373,7 @@ function startGame(gameDuration, [boat, turtle],sounds) {
     1000
   );
 
-//adding background music
+//background music
 const listener = new THREE.AudioListener();
 camera.add(listener);
 
@@ -349,39 +383,27 @@ sound.setVolume(0.09);
 sound.play();
 sound.setLoop(true); 
 
-  renderer = new THREE.WebGLRenderer({
-    canvas: canvas,
-    antialias: true,
-  });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.physicallyCorrectLights = true;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1;
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-  document.body.appendChild(renderer.domElement);
-
   window.addEventListener("resize", function () {
     var width = window.innerWidth;
     var height = window.innerHeight;
     renderer.setSize(width, height);
+
+  //camera
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
   });
-
   scene.add( camera );
+
 
   const waterGeometry = new THREE.PlaneGeometry(
     boundaries.width,
     boundaries.height
   );
-
    waterGeometry.rotateX(-Math.PI / 2);
 
   const waterMaterial = new THREE.MeshPhongMaterial({ 
     color: 0x62b7a9, 
-    opacity: 0.55,
+    opacity: 0.1,
     transparent: true 
   });
   const water = new THREE.Mesh(waterGeometry, waterMaterial);
@@ -391,21 +413,20 @@ sound.setLoop(true);
   waterShader = new Water(
     waterGeometry,
     {
-      textureWidth: 155,
-      textureHeight: 250,
+      textureWidth: 512,
+      textureHeight: 512,
       waterNormals: new THREE.TextureLoader().load( 'assets/waternormals.jpg', function ( texture ) {
 
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 
       } ),
-      sunDirection: new THREE.Vector3(),
+      sunDirection: new THREE.Vector3(1,1,1),
       sunColor: 0xffffff,
-      waterColor: 0x001e0f,
-      distortionScale: 4.7,
+      waterColor: 0x62b7a9,
+      distortionScale: 1.7,
       fog: scene.fog !== undefined
     }
   );
-
   scene.add( waterShader );
 
   sendYourPosition = throttle(traceRateInMillis, false, () => {
@@ -503,9 +524,9 @@ sound.setLoop(true);
   document.body.appendChild(scoreElement);
 
   const floatAmplitude = 0.1;
+  const time = performance.now() * 0.0001;
 
   function animateItems() {
-    const time = performance.now() * 0.001;
     for (const [key, mesh] of Object.entries(itemMeshes)) {
       if (!mesh.outOfBounds) {
         const sinValue = Math.sin(
@@ -516,20 +537,7 @@ sound.setLoop(true);
     }
   }
 
-// const ambientLight = new THREE.AmbientLight(0x404040, 7); 
-// scene.add(ambientLight);
 
-// var light = new THREE.PointLight(0xffffff, 1, 1);
-// light.position.set(0, 1, 0);
-// player.add(light);
-
-const skyColor = 0xffffff; 
-const sunIntensity = 8; 
-const directionalLight = new THREE.DirectionalLight(skyColor, sunIntensity);
-// directionalLight.position.set(0, 10, 0); 
-scene.add(directionalLight);
-// const aboveWaterFogDensity = 0.01;
-// scene.fog = new THREE.FogExp2(skyColor, aboveWaterFogDensity);
 
 document.addEventListener("keydown", function (event) {
     keyboard[event.code] = true;
@@ -671,20 +679,21 @@ let speedLimitation = performance.now();
     animateItems();
     // traces
     sendYourPosition();
-    logTrace(
-      `Player on (${player.position.x.toFixed(2)}, ${player.position.z.toFixed(
-        2, 
-      )}) heading to ${player.rotation.y.toFixed(2)}`
-    );
+    // logTrace(
+    //   `Player on (${player.position.x.toFixed(2)}, ${player.position.z.toFixed(
+    //     2, 
+    //   )}) heading to ${player.rotation.y.toFixed(2)}`
+    // );
     animateOtherPlayers(otherPlayersMeshes);
+    // const time = performance.now() * 0.0001;
   }
   animate();
 
   function render() {
 
-    const time = performance.now() * 0.01;
+    // const time = performance.now() * 0.0001;
 
-    waterShader.material.uniforms[ 'time' ].value += 1.0 / 6000.0;
+    waterShader.material.uniforms[ 'time' ].value += 1.0 / 600.0;
 
     renderer.render( scene, camera );
 
