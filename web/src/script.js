@@ -266,11 +266,11 @@ if (object instanceof THREE.Mesh) {
 
 //TODO add names 
 // // Add the mesh and label to the group
-// group.add(mesh);
+group.add(mesh);
 // // group.add(nameLabel);
 
 // // Add the group to the scene
-// scene.add(group);
+scene.add(group);
 
 return group;
 }
