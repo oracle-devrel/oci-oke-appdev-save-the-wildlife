@@ -150,11 +150,11 @@ Server on its own terminal:
 export REDIS_PASSWORD=fk3ampeHq
 zx scripts/start_redis.mjs
 zx scripts/start_coherence.mjs
-zx scripts/start_redis.mjs && zx scripts/start_coherence.mjs
+export REDIS_PASSWORD=fk3ampeHq && zx scripts/start_redis.mjs && zx scripts/start_coherence.mjs
 cd server
 npm install
 npm start
-cd server && npm install && npm start
+cd server && npm install && npm start && cd ..
 ```
 
 Client on its own terminal:
@@ -162,6 +162,8 @@ Client on its own terminal:
 ```
 cd web
 npm run dev
+
+cd web && npm run dev
 ```
 
 Score on its own terminal:
