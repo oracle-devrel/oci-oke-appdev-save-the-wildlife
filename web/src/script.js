@@ -35,13 +35,13 @@ let playerName = localStorage.getItem("yourName") || "Default";
 let renderer, scene, camera, sun, water;
 let canvas;
 let player, controls;
-let turtleModel;
+
+let turtleModel, boxModel;
 
 let gameOverFlag = false;
-let textureEquirec;
 let sounds;
 let speedElement;
-let waterShader;
+
 let scoreFromBackend;
 let localScore = 0;
 let timerId;
@@ -113,6 +113,9 @@ const boatModel = boatGltf.scene.children[0];
 const turtleGltf = await loader.loadAsync("assets/turtle.gltf");
 const turtleModel = turtleGltf.scene.children[0];
 
+const boxGltf = await loader.loadAsync("assets/box.gltf");
+const boxModel = boxGltf.scene.children[0];
+
 const geometries = [
 new THREE.SphereGeometry(),
 new THREE.BoxGeometry(),
@@ -173,7 +176,7 @@ case "game.on":
     type: "game.start",
     body: { playerId: yourId, playerName },
   });
-  startGame(gameDuration, [boatModel, turtleModel],sounds, textureEquirec);
+  startGame(gameDuration, [boatModel, turtleModel, boxModel],sounds);
   break;
 case "game.end":
   endGame();
@@ -282,6 +285,7 @@ const geometry = isMarineLife(itemType) ? geometries[0] : geometries[1];
 const material = isMarineLife(itemType) ? materials[0] : materials[1];
 const itemMesh = new THREE.Mesh(geometry, material);
 itemMesh.position.set(position.x, position.y, position.z);
+
 console.log(position);
 itemMesh.scale.set(size, size, size);
 itemMesh.itemId = itemId;
@@ -313,7 +317,6 @@ overlay.remove();
 // FIXME models passed as array?
 function startGame(gameDuration, [boat, turtle],sounds) {
 
-console.log("Texture loaded:", textureEquirec);
 
 //renders
 renderer = new THREE.WebGLRenderer({
