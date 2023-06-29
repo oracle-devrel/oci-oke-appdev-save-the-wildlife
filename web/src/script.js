@@ -35,6 +35,7 @@ let playerName = localStorage.getItem("yourName") || "Default";
 let renderer, scene, camera, sun, water;
 let canvas;
 let player, controls;
+let waternormals;
 
 let turtleModel, boxModel;
 
@@ -106,7 +107,10 @@ const listener = new THREE.AudioListener();
 
 
 // Load the GLTF models
+
 const loader = new GLTFLoader();
+const textureLoader = new THREE.TextureLoader();
+
 const boatGltf = await loader.loadAsync("assets/boat.gltf");
 const boatModel = boatGltf.scene.children[0];
 
@@ -115,6 +119,11 @@ const turtleModel = turtleGltf.scene.children[0];
 
 const boxGltf = await loader.loadAsync("assets/box.gltf");
 const boxModel = boxGltf.scene.children[0];
+
+const waternormals = await textureLoader.loadAsync( 'assets/waternormals.jpg');
+waternormals.wrapS = waternormals.wrapT = THREE.RepeatWrapping;
+// console.log("init: ",waternormals);
+
 
 const geometries = [
 new THREE.SphereGeometry(),
@@ -176,7 +185,7 @@ case "game.on":
     type: "game.start",
     body: { playerId: yourId, playerName },
   });
-  startGame(gameDuration, [boatModel, turtleModel, boxModel],sounds);
+  startGame(gameDuration, [boatModel, turtleModel, boxModel],sounds, waternormals);
   break;
 case "game.end":
   endGame();
@@ -315,8 +324,9 @@ overlay.remove();
 }
 
 // FIXME models passed as array?
-function startGame(gameDuration, [boat, turtle],sounds) {
+function startGame(gameDuration, [boat, turtle],sounds, waternormals) {
 
+  console.log("StartGame: ",waternormals);
 
 //renders
 renderer = new THREE.WebGLRenderer({
@@ -381,11 +391,12 @@ water = new Water(
   {
     textureWidth: 512,
     textureHeight: 512,
-    waterNormals: new THREE.TextureLoader().load( 'assets/waternormals.jpg', function ( texture ) {
+    // waterNormals: new THREE.TextureLoader().load( 'assets/waternormals.jpg', function ( texture ) {
 
-      texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+    //   texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 
-    } ),
+    // } ),
+    waterNormals: waternormals,
     sunDirection: new THREE.Vector3(),
     sunColor: 0xffffff,
     waterColor: 0x001e0f,
@@ -443,9 +454,9 @@ const { x, y, z } = player.position;
 const { x: rotX, y: rotY, z: rotZ } = player.rotation;
 const trace = {
 id: yourId,
-x: x.toFixed(5),
-z: z.toFixed(5),
-rotY: rotY.toFixed(5)
+x: x.toFixed(10),
+z: z.toFixed(10),
+rotY: rotY.toFixed(10)
 };
 worker.postMessage({ type: "player.trace.change", body: trace });
 });
