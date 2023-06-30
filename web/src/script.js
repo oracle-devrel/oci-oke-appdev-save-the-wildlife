@@ -17,6 +17,7 @@ const logTrace = throttle(1000, false, console.log);
 
 let otherPlayers = {};
 let otherPlayersMeshes = {};
+let playerSpeed = 0;
 
 let items = {};
 let itemMeshes = {};
@@ -124,7 +125,6 @@ const waternormals = await textureLoader.loadAsync( 'assets/waternormals.jpg');
 waternormals.wrapS = waternormals.wrapT = THREE.RepeatWrapping;
 // console.log("init: ",waternormals);
 
-
 const geometries = [
 new THREE.SphereGeometry(),
 new THREE.BoxGeometry(),
@@ -132,8 +132,8 @@ new THREE.BufferGeometry(),
 ];
 
 const materials = [
-new THREE.MeshPhongMaterial({ color: 0x000000 }), // Green material for wildlife
-new THREE.MeshPhongMaterial({ color: 0xFFFFFF }), // Red material for trash
+new THREE.MeshPhongMaterial({ color: 0x000000 }), // wildlife
+new THREE.MeshPhongMaterial({ color: 0xFFFFFF }), // trash
 ];
 
 //add music loader
@@ -275,33 +275,24 @@ if (object instanceof THREE.Mesh) {
   object.receiveShadow = true;
 }
 });
-
-//TODO add names 
-// // Add the mesh and label to the group
 group.add(mesh);
-// // group.add(nameLabel);
-
-// // Add the group to the scene
 scene.add(group);
-
 return group;
 }
 
 // Create a random trash or wildlife object
 function createItemMesh(itemId, itemType, position, size) {
-// FIXME use marine life models when isMarineLife() returns true
+
+// TODO
 const geometry = isMarineLife(itemType) ? geometries[0] : geometries[1];
 const material = isMarineLife(itemType) ? materials[0] : materials[1];
 const itemMesh = new THREE.Mesh(geometry, material);
 itemMesh.position.set(position.x, position.y, position.z);
-
-console.log(position);
+// console.log(position);
 itemMesh.scale.set(size, size, size);
 itemMesh.itemId = itemId;
 itemMesh.itemType = itemType;
 itemMesh.outOfBounds = false;
-
-// check if object is within the bounds of the plane
 const objectBoundaries = new THREE.Box3().setFromObject(itemMesh);
 if (
 objectBoundaries.min.x > boundaries.width / 2 ||
@@ -309,47 +300,37 @@ objectBoundaries.max.x < -boundaries.width / 2 ||
 objectBoundaries.min.z > boundaries.height / 2 ||
 objectBoundaries.max.z < -boundaries.height / 2
 ) {
-// if the object is outside the plane, mark it as out of bounds and return
 itemMesh.outOfBounds = true;
 return;
 }
-
 scene.add(itemMesh);
 itemMeshes[itemId] = itemMesh;
 return itemMesh;
 }
-
 const overlay = document.getElementById("overlay");
 overlay.remove();
-}
+};
+
 
 // FIXME models passed as array?
 function startGame(gameDuration, [boat, turtle],sounds, waternormals) {
-
-  console.log("StartGame: ",waternormals);
-
-//renders
+  // console.log("StartGame: ",waternormals);
+  // renders
 renderer = new THREE.WebGLRenderer({
-canvas: canvas,
-antialias: true,
+  canvas: canvas,
+  antialias: true,
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-
 renderer.toneMappingExposure = 0.55;
-
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
 document.body.appendChild(renderer.domElement);
 
 sun = new THREE.Vector3();
 
 //boat spawn
-
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-
-
 scene.add(boat);
 player = boat;
 
@@ -391,11 +372,6 @@ water = new Water(
   {
     textureWidth: 512,
     textureHeight: 512,
-    // waterNormals: new THREE.TextureLoader().load( 'assets/waternormals.jpg', function ( texture ) {
-
-    //   texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-
-    // } ),
     waterNormals: waternormals,
     sunDirection: new THREE.Vector3(),
     sunColor: 0xffffff,
@@ -405,47 +381,32 @@ water = new Water(
   }
 );
 water.rotation.x = - Math.PI / 2;
-
 scene.add(water);
 
 // Skybox
-
 const sky = new Sky();
 sky.scale.setScalar( 10000 );
 scene.add( sky );
-
 const skyUniforms = sky.material.uniforms;
-
 skyUniforms[ 'turbidity' ].value = 10;
 skyUniforms[ 'rayleigh' ].value = 2;
 skyUniforms[ 'mieCoefficient' ].value = 0.005;
 skyUniforms[ 'mieDirectionalG' ].value = 0.8;
-
 const parameters = {
   elevation: 5,
   azimuth: 162
 };
-console.log("sky", sky);
-
-
 const pmremGenerator = new THREE.PMREMGenerator( renderer );
 
-sun = new THREE.Vector3(0,0,0);
-
 function updateSun() {
-
   const phi = THREE.MathUtils.degToRad( 90 - parameters.elevation );
   const theta = THREE.MathUtils.degToRad( parameters.azimuth );
-
   sun.setFromSphericalCoords( 1, phi, theta );
-
   sky.material.uniforms[ 'sunPosition' ].value.copy( sun );
   water.material.uniforms[ 'sunDirection' ].value.copy( sun ).normalize();
-
   scene.environment = pmremGenerator.fromScene( sky ).texture;
-
-}
-console.log("sun ", sun);
+};
+// console.log("sun ", sun);
 
 sendYourPosition = throttle(traceRateInMillis, false, () => {
 if (gameOverFlag) return;
@@ -463,10 +424,10 @@ worker.postMessage({ type: "player.trace.change", body: trace });
 
 const navmeshGeometry = new THREE.PlaneGeometry(160, 255);
 const navmeshMaterial = new THREE.MeshBasicMaterial({
-color: 0x0000ff, 
-opacity: 0,
-transparent: true,
-wireframe: false,
+  color: 0x0000ff, 
+  opacity: 0,
+  transparent: true,
+  wireframe: false,
 });
 const navmesh = new THREE.Mesh(navmeshGeometry, navmeshMaterial);
 
@@ -474,12 +435,9 @@ water.addEventListener("change", () => {
 navmesh.geometry = water.geometry.clone();
 navmesh.position.copy(water.position);
 });
-
-// Add the navmesh to the scene
 navmeshGeometry.rotateX(Math.PI / 2);
 scene.add(navmesh);
 
-// Create a variable to store the remaining time
 remainingTime = gameDuration;
 var timerDiv = document.createElement("div");
 timerDiv.style.position = "absolute";
@@ -489,6 +447,16 @@ timerDiv.style.color = "white";
 timerDiv.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
 timerDiv.innerHTML = "Time: " + remainingTime;
 document.body.appendChild(timerDiv);
+
+var scoreElement = document.createElement("div");
+scoreElement.style.position = "absolute";
+scoreElement.style.top = "10px";
+scoreElement.style.left = "10px";
+scoreElement.style.color = "white";
+scoreElement.style.fontSize = "24px";
+scoreElement.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+scoreElement.innerHTML = "Score: " + localScore;
+document.body.appendChild(scoreElement);
 
 speedElement = document.createElement("div");
 speedElement.style.position="absolute";
@@ -506,40 +474,23 @@ remainingTime--;
 }
 timerDiv.innerHTML = "Time: " + remainingTime;
 setTimeout(updateTimer, 1000);
-}
-
-// Start the timer
+};
 updateTimer();
 
 function restart() {
 restartBtn.style.display = "none";
-
 for (const [key, mesh] of Object.entries(itemMeshes)) {
 scene.remove(mesh);
-}
-
+};
 player.position.set(0, 0, 0);
 localScore = 0;
-
 scoreElement.innerHTML = "Score: " + localScore;
-
 remainingTime = remainingTime;
 timerDiv.innerHTML = "Time: " + remainingTime;
-
 updateTimer();
 }
 
 startTimer();
-
-var scoreElement = document.createElement("div");
-scoreElement.style.position = "absolute";
-scoreElement.style.top = "10px";
-scoreElement.style.left = "10px";
-scoreElement.style.color = "white";
-scoreElement.style.fontSize = "24px";
-scoreElement.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-scoreElement.innerHTML = "Score: " + localScore;
-document.body.appendChild(scoreElement);
 
 const floatAmplitude = 0.1;
 const time = performance.now() * 0.0001;
@@ -556,13 +507,11 @@ if (!mesh.outOfBounds) {
 };
 
 document.addEventListener("keydown", function (event) {
-keyboard[event.code] = true;
-});
-document.addEventListener("keyup", function (event) {
-keyboard[event.code] = false;
-});
-
-let playerSpeed = 0;
+  keyboard[event.code] = true;
+  });
+  document.addEventListener("keyup", function (event) {
+  keyboard[event.code] = false;
+  });
 
 const navmeshBoundingBox = new THREE.Box3().setFromObject(navmesh);
 
