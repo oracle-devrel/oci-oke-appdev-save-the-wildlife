@@ -2,7 +2,7 @@
 
 ## Introduction - The power of Cloud Native on Oracle Cloud
 
-![save the wildlife logo](images/stwl.png)
+![save the wildlife logo](images/stwlUpgrade.png)
 
 This workshop is a valuable opportunity to enhance your cloud computing skills and learn how to build and deploy multiplayer applications in the cloud. With Cloud Native on Oracle Cloud, you'll discover the power of deploying a _`Three.js`_ application to the cloud, modernizing it, and enhancing it with immersive experiences.
 
