@@ -6,7 +6,6 @@ In this lab, we will create container images for the application components and 
 
 To help streamline the process, you'll use a custom script to build and publish container images to the OCI Container Registry. Container Registry makes it easy to store, share, and manage container images. Registries can be private (default) or public.
 
-> **Note**: the instructions in this lab are designed around the Cloud Shell and utilize some of the built-in session variables. Should you choose to complete this outside of Cloud Shell, you will need to obtain these resource OCID's manually (through the OCI Panel or OCI CLI).
 
 Estimated Lab Time: 15 minutes
 
@@ -23,7 +22,7 @@ In this task, you will create a container image for both the server and  web com
 1. Generate an Auth Token for your Cloud user; this is required to authenticate to OCI Container Registry.
 
     ```
-    <copy>oci iam auth-token create --description "DevLive-Workshop" --user-id <paste user OCID> --query 'data.token' --raw-output</copy>
+    <copy>oci iam auth-token create --description "OCW-Workshop" --user-id <paste user OCID> --query 'data.token' --raw-output</copy>
     ```
 
 2. Then, copy the output string and store it somewhere safe. We will also create an environment variable to carry our auth token:
@@ -44,10 +43,10 @@ In this task, you will create a container image for both the server and  web com
 
     > **Note**: when using a federated user (most common) you will need to include `oracleidentitycloudservice/` before your email address.
 
-4. Making sure that we're in the right directory (`devlive-save-the-wildlife`) before we do anything else, let's execute:
+4. Making sure that we're in the right directory (`oci-oke-appdev-save-the-wildlife`) before we do anything else, let's execute:
 
     ```
-    <copy>cd ~/devlive-save-the-wildlife</copy>
+    <copy>cd ~/oci-oke-appdev-save-the-wildlife</copy>
     ```
 
 5. Then, we run the _`npx`_ script to set the environment. This script will:
@@ -82,8 +81,42 @@ In this task, you will create a container image for both the server and  web com
 
 9. Finally, we repeat step 7 and copy the `Released:` path and save it in a text document for now.
 
+## Task 2A: Deploy to Container Instances
 
-## Task 2: Deploy to Container Instances
+Now that both images have been created and published, lets deploy them to the Container Instances from OCI Console.
+
+Using UI components navigate to the Container Instances.
+**`Developer Services`** -> **`Container Instances`**.
+
+Click on create new container instance
+TODO - add image
+
+Select shape and Network
+TODO - add image
+
+Select web container image from root
+Select server container image from root
+Update names
+Click create new instance
+
+Once complete copy private IP address
+Open load balancer that we create in previous lab
+click on backends
+select web backend
+Click add new backend
+Choose IP
+Paste private IP and select port 80
+delete old backend set
+
+Now open server backend set
+click add new 
+Choose IP
+Paste private IP and select port 3000
+delete old backend set
+
+Once complete copy public IP address from load balancer and paste it into browser
+
+## (Optional) Task 2B: Deploy to Container Instances (Command line)
 
 Now that both images have been created and published, we just need to grab just a few more pieces of information and launch the Container Instances resource.
 
