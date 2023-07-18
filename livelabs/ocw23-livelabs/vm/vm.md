@@ -2,6 +2,9 @@
 
 ## Introduction
 
+![save the wildlife logo](../../../doc/multiplayer-VM.drawio.png)
+
+
 In this lab, you will complete the process of deploying the first form of the _`Three.js`_ app to the Oracle Cloud. The deployment process utilizes *Terraform* and *Ansible*, however, we've provided a script to help streamline the process.
 
 Terraform is an Open Source tool to deploy resources in the cloud using code. This method is typically referred to as Infrastructure as Code (IaC). Terraform configuration is declarative; you simply define what you want in the Oracle Cloud and it ensures the resources are created to your specifications.

@@ -2,6 +2,9 @@
 
 ## Introduction
 
+![save the wildlife logo](../../../doc/multiplayer-CI.drawio.png)
+
+
 In this lab, we will create container images for the application components and deploy them to the Container Instances service. Container Instances are an excellent tool for running containerized applications, without the need to manage any underlying infrastructure. Just deploy and go.
 
 To help streamline the process, you'll use a custom script to build and publish container images to the OCI Container Registry. Container Registry makes it easy to store, share, and manage container images. Registries can be private (default) or public.

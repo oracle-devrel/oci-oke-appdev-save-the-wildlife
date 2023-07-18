@@ -1,6 +1,10 @@
 # Enhance the application architecture
 
 ## Introduction
+
+![save the wildlife logo](../../../doc/multiplayer-OKE.drawio.png)
+
+
 In this lab we will enhance our application in an effort to continue moving towards a more cloud native design. For this, an autonomous database will be deployed, new application components will be added, and the the entire solution wll be deployed to Oracle Container Engine for Kubernetes (OKE).
 
 
