@@ -2,11 +2,10 @@
 
 ## Introduction
 
-In this lab, we will create container images for the application components and deploy them to the [Container Instances](https://docs.oracle.com/en-us/iaas/Content/container-instances/home.htm) service. Container Instances are an excellent tool for running containerized applications, without the need to manage any underlying infrastructure. Just deploy and go.
+In this lab, we will create container images for the application components and deploy them to the Container Instances service. Container Instances are an excellent tool for running containerized applications, without the need to manage any underlying infrastructure. Just deploy and go.
 
 To help streamline the process, you'll use a custom script to build and publish container images to the OCI Container Registry. Container Registry makes it easy to store, share, and manage container images. Registries can be private (default) or public.
 
-> **Note**: the instructions in this lab are designed around the Cloud Shell and utilize some of the built-in session variables. Should you choose to complete this outside of Cloud Shell, you will need to obtain these resource OCID's manually (through the OCI Panel or OCI CLI).
 
 Estimated Lab Time: 15 minutes
 
@@ -42,12 +41,12 @@ In this task, you will create a container image for both the server and  web com
 
     ![Export variables](images/ocir-variables.png)
 
-    > **Note**: when using a [federated user](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/usingscim.htm) (most common) you will need to include `oracleidentitycloudservice/` before your email address.
+    > **Note**: when using a federated user (most common) you will need to include `oracleidentitycloudservice/` before your email address.
 
-4. Making sure that we're in the right directory (`devlive-save-the-wildlife`) before we do anything else, let's execute:
+4. Making sure that we're in the right directory (`oci-oke-appdev-save-the-wildlife`) before we do anything else, let's execute:
 
     ```
-    <copy>cd ~/devlive-save-the-wildlife</copy>
+    <copy>cd ~/oci-oke-appdev-save-the-wildlife</copy>
     ```
 
 5. Then, we run the _`npx`_ script to set the environment. This script will:
@@ -82,8 +81,54 @@ In this task, you will create a container image for both the server and  web com
 
 9. Finally, we repeat step 7 and copy the `Released:` path and save it in a text document for now.
 
+## Task 2A: Deploy to Container Instances
 
-## Task 2: Deploy to Container Instances
+Now that both images have been created and published, lets deploy them to the Container Instances from OCI Console.
+
+1. Using UI components navigate to the Container Instances.
+**`Developer Services`** -> **`Container Instances`**.
+
+2. Click on create new container instance.
+
+3. Add basic details about your container.
+
+    ![Add basic information about container instances](images/ci-ui-create.png)
+
+4. Select shape and network (you can reuse network we created earlier in previous lab), click next once finished.
+
+    ![Define shape and network](images/ci-ui-shape.png)
+
+5. Add `server` to name.
+
+    ![Add server name](images/ci-ui-add-container-server-name.png)
+
+6. Click `select image` container image from root compartment.
+
+    ![Select container image](images/ci-ui-add-container-select-image.png)
+
+7. Select `server` container image and version from root compartment (depending on your setup you might need to change the repository to root).
+
+    ![Specify container release from root compartment](images/ci-ui-add-container-server-repo.png)
+
+8. Click `another container` and repeat the same process for `web`.
+
+    ![Add another container web](images/ci-ui-add-container-another-container.png)
+
+9. Once completed click `Next`.
+
+    ![Confirm by clicking next](images/ci-ui-container-next.png)
+
+10. Review and press `create` to confirm
+
+    ![Click create](images/ci-ui-final-create.png)
+
+11. Wait for Container Instances to be provisioned
+
+    ![Provisioning State](images/ci-ui-creating.png)
+
+    ![Active State](images/ci-ui-active.png)
+
+## (Optional) Task 2B: Deploy to Container Instances (Command line)
 
 Now that both images have been created and published, we just need to grab just a few more pieces of information and launch the Container Instances resource.
 
@@ -113,7 +158,7 @@ Now that both images have been created and published, we just need to grab just 
 
 4. Finally - you'll need to convert your OCIR username and auth token/password to _base64_ format, as required by the CLI. For that, depending on your account's authentication status (federated user or IAM user), here are the commands required to achieve this conversion: 
 
-    - For [federated users](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/usingscim.htm) (you'll most likely be in this group):
+    - For federated users (you'll most likely be in this group):
 
         ```
         <copy>

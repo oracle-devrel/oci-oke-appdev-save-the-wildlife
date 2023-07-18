@@ -85,11 +85,20 @@ In this task, you will create a container image for both the server and  web com
 
 Now that both images have been created and published, lets deploy them to the Container Instances from OCI Console.
 
-Using UI components navigate to the Container Instances.
+1. Using UI components navigate to the Container Instances.
 **`Developer Services`** -> **`Container Instances`**.
 
-Click on create new container instance
-TODO - add image
+2. Click on create new container instance
+
+3. Add basic details about your container
+
+    ![Server release path](images/e.png)
+
+
+
+
+
+
 
 Select shape and Network
 TODO - add image

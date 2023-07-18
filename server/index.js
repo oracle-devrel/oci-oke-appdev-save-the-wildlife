@@ -23,8 +23,7 @@ let subClient;
 let cacheSession;
 
 // FIXME Flag to use coherence
-const ENABLE_COHERENCE_BACKEND =
-  process.env.ENABLE_COHERENCE_BACKEND === "false" ? false : true;
+const ENABLE_COHERENCE_BACKEND = process.env.ENABLE_COHERENCE_BACKEND === "true";
 
 // FIXME coherence security, probably TLS, password would be easier to begin with
 const COHERENCE_SERVICE_HOST = process.env.COHERENCE_SERVICE_HOST
@@ -38,8 +37,7 @@ const COHERENCE_SERVICE_PORT = process.env.COHERENCE_SERVICE_PORT
 const coherenceAddress = `${COHERENCE_SERVICE_HOST}:${COHERENCE_SERVICE_PORT}`;
 logger.info(`Coherence URL: ${coherenceAddress}`);
 
-const ENABLE_REDIS_BACKEND =
-  process.env.ENABLE_REDIS_BACKEND === "false" ? false : true;
+const ENABLE_REDIS_BACKEND = process.env.ENABLE_REDIS_BACKEND === "true";
 
 if (ENABLE_REDIS_BACKEND) {
   const REDIS_SERVICE_HOST = process.env.REDIS_SERVICE_HOST

@@ -28,6 +28,11 @@ export async function bump(level = "patch") {
   }
 }
 
+export async function getNpmVersion() {
+  const { version } = await fs.readJson("./package.json");
+  return version;
+}
+
 export async function buildWeb() {
   try {
     console.log(`Clean dist folder`);

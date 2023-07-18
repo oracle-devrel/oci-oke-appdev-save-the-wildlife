@@ -24,17 +24,17 @@ Estimated Lab Time: 15 minutes
 2. As soon as the Cloud Shell is loaded, you can retrieve the workshop assets for this lab.
 
     ```
-    <copy>git clone -b mvp https://github.com/oracle-devrel/devlive-save-the-wildlife</copy>
+    <copy>git clone https://github.com/oracle-devrel/oci-oke-appdev-save-the-wildlife</copy>
     ```
 
 3. The result will look like this:
 
     ![Git Clone](images/git-clone.png)
 
-4. Change the directory with `cd` to `devlive-save-the-wildlife` directory:
+4. Change the directory with `cd` to `oci-oke-appdev-save-the-wildlife` directory:
 
     ```
-    <copy>cd devlive-save-the-wildlife</copy>
+    <copy>cd oci-oke-appdev-save-the-wildlife</copy>
     ```
 
 6. Terraform uses a file called `tfvars` that contains variables used to communicate with the Oracle Cloud. You are going to copy the provided template file and input your own values. Then, run the following command:
@@ -120,7 +120,7 @@ Estimated Lab Time: 15 minutes
 
     ![Ansible configuration](images/script-03.png)
 
-5. And there you have it! Copy the _`lb_public_ip`_ value (corresponding to the Load Balancer), open a new browser tab, and check your multiplayer game by pasting your public ip address.
+5. And there you have it! Copy the _`lb_public_ip`_ value (corresponding to the Load Balancer), open a new browser tab, and check it out.
 
     ![Script complete](images/script-04.png)
 

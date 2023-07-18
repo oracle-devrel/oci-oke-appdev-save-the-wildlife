@@ -1,4 +1,5 @@
 #!/usr/bin/env zx
+//container.mjs
 import { exitWithError } from "./utils.mjs";
 
 export async function whichContainerEngine() {
@@ -64,7 +65,17 @@ export async function pushImage(remote) {
   }
 }
 
+// FIXME
 export async function build_image(name, version) {
+  console.log(`${ce} build . -t ${name}:${version}`);
+  try {
+    await $`${ce} build . -t ${name}:${version}`;
+  } catch (error) {
+    exitWithError(error.stderr);
+  }
+}
+
+export async function buildImage(name, version) {
   console.log(`${ce} build . -t ${name}:${version}`);
   try {
     await $`${ce} build . -t ${name}:${version}`;

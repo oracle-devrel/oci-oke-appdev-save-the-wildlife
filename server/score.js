@@ -6,21 +6,25 @@ dotenv.config({ path: "./config/.env" });
 // FIXME change log level based on NODE_ENV
 const logger = pino();
 
+let scoreFeatureFlag = true;
+
 const SCORE_SERVICE_HOST = process.env.SCORE_SERVICE_HOST;
 if (!SCORE_SERVICE_HOST) {
   logger.error(`SCORE_SERVICE_HOST not defined`);
-  process.exit(1);
+  scoreFeatureFlag = false;
 }
 const SCORE_SERVICE_PORT = process.env.SCORE_SERVICE_PORT;
 if (!SCORE_SERVICE_PORT) {
+  scoreFeatureFlag = false;
   logger.error(`SCORE_SERVICE_PORT not defined`);
-  process.exit(1);
+}
+if (!scoreFeatureFlag) {
+  const scoreServiceUrl = `${SCORE_SERVICE_HOST}:${SCORE_SERVICE_PORT}`;
+  logger.info(`Connecting to Score on ${scoreServiceUrl}`);
 }
 
-const scoreServiceUrl = `${SCORE_SERVICE_HOST}:${SCORE_SERVICE_PORT}`;
-logger.info(`Connecting to Score on ${scoreServiceUrl}`);
-
 export async function postCurrentScore(playerId, playerName, operationType) {
+  if (!scoreFeatureFlag) return;
   try {
     const stringifyBody = JSON.stringify({
       operationType: operationType,
@@ -39,6 +43,7 @@ export async function postCurrentScore(playerId, playerName, operationType) {
 }
 
 export async function deleteCurrentScore(playerId) {
+  if (!scoreFeatureFlag) return;
   try {
     await fetch(`http://${scoreServiceUrl}/api/score/${playerId}`, {
       method: "DELETE",
