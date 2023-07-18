@@ -20,7 +20,7 @@ spec:
         app: web
     spec:
       containers:
-      - image: REGION_TEMPLATE_KEY.ocir.io/TENANCY_TEMPLATE_NAMESPACE/oci_multiplayer/web:0.0.2
+      - image: web
         name: web
         readinessProbe:
           httpGet:

@@ -12,18 +12,18 @@ module.exports = merge(commonConfiguration, {
   devServer: {
     host: '0.0.0.0',
     port: portFinderSync.getPort(8080),
-    contentBase: './dist',
-    watchContentBase: true,
+    // contentBase: './dist',
+    // watchContentBase: true,
     proxy: {
       '/socket.io': {target: 'ws://localhost:3000'},
     },
     open: true,
     https: false,
-    useLocalIp: true,
-    disableHostCheck: true,
-    overlay: true,
-    noInfo: true,
-    after: function (app, server, compiler) {
+    // useLocalIp: true,
+    // disableHostCheck: true,
+    // overlay: true,
+    // noInfo: true,
+    onAfterSetupMiddleware: function (server) {
       const port = server.options.port;
       const https = server.options.https ? 's' : '';
       const localIp = ip.v4.sync();

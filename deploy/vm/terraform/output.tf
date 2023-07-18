@@ -9,7 +9,7 @@ output "lb_public_ip" {
   value = oci_core_public_ip.public_reserved_ip.ip_address
 }
 
-# Output the "list" of all availability domains.
-output "all-availability-domains-in-your-tenancy" {
-  value = data.oci_identity_availability_domains.ads.availability_domains
-}
+# # Output the "list" of all availability domains.
+# output "all-availability-domains-in-your-tenancy" {
+#   value = data.oci_identity_availability_domains.ads.availability_domains
+# }

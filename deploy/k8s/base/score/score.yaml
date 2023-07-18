@@ -30,7 +30,7 @@ spec:
           - name: wallet-volume
             mountPath: /wallet
       containers:
-        - image: REGION_TEMPLATE_KEY.ocir.io/TENANCY_TEMPLATE_NAMESPACE/oci_multiplayer/score:0.0.1
+        - image: score
           imagePullPolicy: "Always"
           name: score
           livenessProbe:
