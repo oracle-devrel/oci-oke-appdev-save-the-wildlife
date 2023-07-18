@@ -81,7 +81,7 @@ In this task, you will create a container image for both the server and  web com
 
 9. Finally, we repeat step 7 and copy the `Released:` path and save it in a text document for now.
 
-## Task 2: Deploy to Container Instances
+## Task 2A: Deploy to Container Instances
 
 Now that both images have been created and published, lets deploy them to the Container Instances from OCI Console.
 
@@ -127,6 +127,8 @@ Now that both images have been created and published, lets deploy them to the Co
     ![Provisioning State](images/ci-ui-creating.png)
 
     ![Active State](images/ci-ui-active.png)
+
+## (Optional) Task 2B: Deploy to Container Instances (Command line)
 
 Now that both images have been created and published, we just need to grab just a few more pieces of information and launch the Container Instances resource.
 

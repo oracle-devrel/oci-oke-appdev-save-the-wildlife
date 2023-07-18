@@ -47,7 +47,7 @@ Estimated Lab Time: 15 minutes
 4. Ensure you are in the App directory.
 
     ```
-    <copy>cd ~/devlive-save-the-wildlife</copy>
+    <copy>cd ~/oci-oke-appdev-save-the-wildlife</copy>
     ```
 
 5. Assign environment variables to be consumed by the setup and deployment scripts. _(note: if you do not set these, the scripts will prompt you for the corresponding values upon execution)_

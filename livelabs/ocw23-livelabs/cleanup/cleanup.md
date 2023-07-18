@@ -34,10 +34,10 @@ Estimated Lab Time: 10 minutes
 
 ## Task 2: Remove VM Compute Infrastructure
 
-1. Ensure you are in the `devlive-save-the-wildlife` folder.
+1. Ensure you are in the `oci-oke-appdev-save-the-wildlife` folder.
 
     ```
-    <copy>cd ~/devlive-save-the-wildlife</copy>
+    <copy>cd ~/oci-oke-appdev-save-the-wildlife</copy>
     ```
 
 2. Run the stop_VM script to tear everything down.
