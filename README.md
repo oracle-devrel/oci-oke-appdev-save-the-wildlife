@@ -1,32 +1,41 @@
-# devlive-save-the-wildlife
+# Introduction
 
-[![License: UPL](https://img.shields.io/badge/license-UPL-green)](https://img.shields.io/badge/license-UPL-green) [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=oracle-devrel_devlive-save-the-wildlife)](https://sonarcloud.io/dashboard?id=oracle-devrel_devlive-save-the-wildlife)
+## Introduction - The power of Cloud Native on Oracle Cloud
 
-## THIS IS A NEW, BLANK REPO THAT IS NOT READY FOR USE YET.  PLEASE CHECK BACK SOON!
+![save the wildlife logo](images/stwlUpgrade.png)
 
-## Introduction
-MISSING
+This workshop is a valuable opportunity to enhance your cloud computing skills and learn how to build and deploy multiplayer applications in the cloud. With Cloud Native on Oracle Cloud, you'll discover the power of deploying a _`Three.js`_ application to the cloud, modernizing it, and enhancing it with immersive experiences.
 
-## Getting Started
-MISSING
+_`Three.js`_ is a popular JavaScript library for creating 3D graphics and animations in web browsers, and there are other options available, such as _`Babylon.js`_ and _`A-Frame`_. The principles of 3D graphics and animation are transferable between these libraries, and the backend and concurrency management principles that are essential for Immersive applications are also applicable across all three libraries. Part 1 of this workshop will focus on _`Three.js`_, but we will cover other options in the future.
+
+With _`Three.js`_ and Cloud Native on Oracle Cloud, you can create engaging immersive applications for your customers, employees, and partners. Whether it's virtual showrooms, immersive training simulations, product demonstrations, or games, _`Three.js`_ and Cloud Native on Oracle Cloud provide the scalability, performance, and availability you need to deliver immersive experiences.
+
+Estimated Lab Time: 60 minutes
+
+### Objectives
+In this workshop, you will learn how to:
+
+* Deploy a simple Three.js application to OCI Compute with Terraform, using Ansible to provide all requisite app configurations.
+
+* Create container images of the application components and migrate them to OCI Container Images.
+
+* Add _`Redis`_ and _`NginX`_ controller to your application to support scalability, while deploying to Oracle Container Engine for Kubernetes (OKE).
 
 ### Prerequisites
-MISSING
 
-## Notes/Issues
-MISSING
+* An Oracle Free Tier or Paid Cloud Account
+* [Familiarity with the OCI console](https://docs.oracle.com/en-us/iaas/Content/GSG/Concepts/console.htm)
 
-## URLs
-* Nothing at this time
+* Basic familiarity with app containerization
 
-## Contributing
-This project is open source.  Please submit your contributions by forking this repository and submitting a pull request!  Oracle appreciates any contributions that are made by the open source community.
+* [Basic familiarity with OCI Container Instances](https://www.oracle.com/cloud/cloud-native/container-instances/)
 
-## License
-Copyright (c) 2022 Oracle and/or its affiliates.
+* [Basic familiarity with OKE](https://www.oracle.com/cloud/cloud-native/container-engine-kubernetes/)
 
-Licensed under the Universal Permissive License (UPL), Version 1.0.
 
-See [LICENSE](LICENSE) for more details.
+## Acknowledgements
 
-ORACLE AND ITS AFFILIATES DO NOT PROVIDE ANY WARRANTY WHATSOEVER, EXPRESS OR IMPLIED, FOR ANY SOFTWARE, MATERIAL OR CONTENT OF ANY KIND CONTAINED OR PRODUCED WITHIN THIS REPOSITORY, AND IN PARTICULAR SPECIFICALLY DISCLAIM ANY AND ALL IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE.  FURTHERMORE, ORACLE AND ITS AFFILIATES DO NOT REPRESENT THAT ANY CUSTOMARY SECURITY REVIEW HAS BEEN PERFORMED WITH RESPECT TO ANY SOFTWARE, MATERIAL OR CONTENT CONTAINED OR PRODUCED WITHIN THIS REPOSITORY. IN ADDITION, AND WITHOUT LIMITING THE FOREGOING, THIRD PARTIES MAY HAVE POSTED SOFTWARE, MATERIAL OR CONTENT TO THIS REPOSITORY WITHOUT ANY REVIEW. USE AT YOUR OWN RISK. 
+* **Author** - Victor Martin - Technology Product Strategy Director - EMEA
+* **Author** - Wojciech (Vojtech) Pluta - Developer Relations - Immersive Technology Lead
+* **Author** - Eli Schilling - Developer Relations - Cloud Native and DevOps
+* **Last Updated By/Date** - July, 2024
