@@ -2,7 +2,7 @@
 
 ## Introduction
 
-![save the wildlife logo](../../../doc/multiplayer-CI.drawio.png)
+![save the wildlife logo](../../../doc/multiplayer-VM.drawio.png)
 
 
 In this lab, we will create container images for the application components and deploy them to the Container Instances service. Container Instances are an excellent tool for running containerized applications, without the need to manage any underlying infrastructure. Just deploy and go.
